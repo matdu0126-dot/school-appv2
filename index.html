@@ -2,130 +2,167 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>학교 앱</title>
+  <title>관인고등학교 앱</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
+      font-family: Arial;
+      background: #f5f5f5;
+      text-align: center;
     }
-
+    .hidden { display: none; }
     header {
       background: white;
       padding: 15px;
-      text-align: center;
-      font-weight: bold;
       border-bottom: 1px solid #ddd;
+      font-weight: bold;
     }
-
-    .container {
-      padding: 20px;
-      text-align: center;
-    }
-
-    select, button {
+    .container { padding: 20px; }
+    button, select {
       padding: 10px;
+      margin: 10px;
       font-size: 16px;
-      margin-top: 10px;
     }
-
     .card {
       background: white;
-      padding: 15px;
       margin: 15px;
+      padding: 15px;
       border-radius: 10px;
-    }
-
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      background: white;
-      display: flex;
-      justify-content: space-around;
-      border-top: 1px solid #ddd;
-      padding: 10px 0;
-    }
-
-    .hidden {
-      display: none;
     }
   </style>
 </head>
 
 <body>
 
-<!-- 학교 선택 화면 -->
 <div id="selectScreen" class="container">
   <h2>🏫 학교 선택</h2>
-
   <select id="schoolSelect">
     <option>학교를 선택하세요</option>
-    <option>우리학교</option>
-    <option>테스트고등학교</option>
+    <option>관인고등학교</option>
   </select>
-
   <br>
   <button onclick="enterApp()">들어가기</button>
 </div>
 
-<!-- 메인 앱 화면 -->
-<div id="mainApp" class="hidden">
+<div id="menuScreen" class="hidden">
+  <header id="schoolName">🏫 학교</header>
+  <div class="container">
+    <h2>메뉴 선택</h2>
+    <button onclick="openPage('timetable')">📅 시간표</button><br>
+    <button onclick="openPage('meal')">🍱 급식</button><br>
+    <button onclick="goBack()">← 학교 다시 선택</button>
+  </div>
+</div>
 
-  <header>
-  <span id="schoolName">🏫 학교</span>
-  <button onclick="goBack()" style="float:right;">학교 변경</button>
-</header>
+<div id="timetable" class="hidden">
+  <header>📅 시간표</header>
 
   <div class="card">
-    <h3>📅 오늘 시간표</h3>
-    <p>1교시: 국어</p>
-    <p>2교시: 수학</p>
+    <select id="gradeSelect">
+      <option value="1">1학년</option>
+      <option value="2">2학년</option>
+      <option value="3">3학년</option>
+    </select>
+
+    <select id="classSelect">
+      <option value="1">1반</option>
+      <option value="2">2반</option>
+    </select>
+
+    <br>
+    <button onclick="saveClass()">확인</button>
   </div>
 
-  <div class="card">
-    <h3>🍱 급식</h3>
-    <p>급식 정보</p>
-  </div>
+  <div class="card" id="timetableContent"></div>
+  <button onclick="goMenu()">← 메뉴로</button>
+</div>
 
-  <div class="bottom-nav">
-    <div>홈</div>
-    <div>시간표</div>
-    <div>급식</div>
-    <div>공지</div>
-  </div>
-
+<div id="meal" class="hidden">
+  <header>🍱 급식</header>
+  <div class="card" id="mealContent"></div>
+  <button onclick="goMenu()">← 메뉴로</button>
 </div>
 
 <script>
-  function enterApp() {
-    const school = document.getElementById("schoolSelect").value;
+// 공통
+function enterApp() {
+  const school = document.getElementById("schoolSelect").value;
+  if (school === "학교를 선택하세요") {
+    alert("학교 선택");
+    return;
+  }
+  localStorage.setItem("school", school);
+  document.getElementById("schoolName").innerText = "🏫 " + school;
+  document.getElementById("selectScreen").classList.add("hidden");
+  document.getElementById("menuScreen").classList.remove("hidden");
+}
 
-    if (school === "학교를 선택하세요") {
-      alert("학교를 선택해주세요!");
-      return;
+function openPage(page) {
+  document.getElementById("menuScreen").classList.add("hidden");
+  document.getElementById(page).classList.remove("hidden");
+
+  if (page === "meal") loadMeal();
+}
+
+function goMenu() {
+  document.getElementById("timetable").classList.add("hidden");
+  document.getElementById("meal").classList.add("hidden");
+  document.getElementById("menuScreen").classList.remove("hidden");
+}
+
+function goBack() {
+  localStorage.removeItem("school");
+  document.getElementById("menuScreen").classList.add("hidden");
+  document.getElementById("selectScreen").classList.remove("hidden");
+}
+
+// 시간표
+function saveClass() {
+  const g = document.getElementById("gradeSelect").value;
+  const c = document.getElementById("classSelect").value;
+  localStorage.setItem("class", g + "-" + c);
+  document.getElementById("timetableContent").innerHTML =
+    `<h3>${g}-${c} 시간표</h3>`;
+}
+
+// 급식 (API)
+async function loadMeal() {
+  const url = "https://meal-server-1.onrender.com/meal";
+
+  let html = "<h3>🍱 오늘 급식</h3>";
+
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+
+    const meal = data.mealServiceDietInfo?.[1]?.row?.[0]?.DDISH_NM;
+
+    if (meal) {
+      meal.split("<br/>").forEach(f => {
+        html += `<p>${f}</p>`;
+      });
+    } else {
+      html += "<p>급식 없음</p>";
     }
 
-    // 학교 이름 표시
-    document.getElementById("schoolName").innerText = "🏫 " + school;
-
-    // 화면 전환
-    document.getElementById("selectScreen").classList.add("hidden");
-    document.getElementById("mainApp").classList.remove("hidden");
-   
-    function goBack() {
-  // 메인 숨기기
-  document.getElementById("mainApp").classList.add("hidden");
-
-  // 선택 화면 다시 보이기
-  document.getElementById("selectScreen").classList.remove("hidden");
-
-  // 선택 초기화 (선택사항)
-  document.getElementById("schoolSelect").selectedIndex = 0;
-}
+  } catch {
+    html += "<p>불러오기 실패</p>";
   }
+
+  document.getElementById("mealContent").innerHTML = html;
+}
+
+// 자동 로그인
+window.onload = () => {
+  const saved = localStorage.getItem("school");
+  if (saved) {
+    document.getElementById("schoolName").innerText = "🏫 " + saved;
+    document.getElementById("selectScreen").classList.add("hidden");
+    document.getElementById("menuScreen").classList.remove("hidden");
+  }
+}
 </script>
 
 </body>
