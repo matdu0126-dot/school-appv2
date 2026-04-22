@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>학교 앱</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    header {
+      background: white;
+      padding: 15px;
+      text-align: center;
+      font-weight: bold;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .container {
+      padding: 20px;
+      text-align: center;
+    }
+
+    select, button {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .card {
+      background: white;
+      padding: 15px;
+      margin: 15px;
+      border-radius: 10px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      border-top: 1px solid #ddd;
+      padding: 10px 0;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 학교 선택 화면 -->
+<div id="selectScreen" class="container">
+  <h2>🏫 학교 선택</h2>
+
+  <select id="schoolSelect">
+    <option>학교를 선택하세요</option>
+    <option>우리학교</option>
+    <option>테스트고등학교</option>
+  </select>
+
+  <br>
+  <button onclick="enterApp()">들어가기</button>
+</div>
+
+<!-- 메인 앱 화면 -->
+<div id="mainApp" class="hidden">
+
+  <header>
+  <span id="schoolName">🏫 학교</span>
+  <button onclick="goBack()" style="float:right;">학교 변경</button>
+</header>
+
+  <div class="card">
+    <h3>📅 오늘 시간표</h3>
+    <p>1교시: 국어</p>
+    <p>2교시: 수학</p>
+  </div>
+
+  <div class="card">
+    <h3>🍱 급식</h3>
+    <p>급식 정보</p>
+  </div>
+
+  <div class="bottom-nav">
+    <div>홈</div>
+    <div>시간표</div>
+    <div>급식</div>
+    <div>공지</div>
+  </div>
+
+</div>
+
+<script>
+  function enterApp() {
+    const school = document.getElementById("schoolSelect").value;
+
+    if (school === "학교를 선택하세요") {
+      alert("학교를 선택해주세요!");
+      return;
+    }
+
+    // 학교 이름 표시
+    document.getElementById("schoolName").innerText = "🏫 " + school;
+
+    // 화면 전환
+    document.getElementById("selectScreen").classList.add("hidden");
+    document.getElementById("mainApp").classList.remove("hidden");
+   
+    function goBack() {
+  // 메인 숨기기
+  document.getElementById("mainApp").classList.add("hidden");
+
+  // 선택 화면 다시 보이기
+  document.getElementById("selectScreen").classList.remove("hidden");
+
+  // 선택 초기화 (선택사항)
+  document.getElementById("schoolSelect").selectedIndex = 0;
+}
+  }
+</script>
+
+</body>
+</html>
