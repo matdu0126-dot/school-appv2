@@ -36,6 +36,7 @@
 
 <body>
 
+<!-- 학교 선택 -->
 <div id="selectScreen" class="container">
   <h2>🏫 학교 선택</h2>
   <select id="schoolSelect">
@@ -46,6 +47,7 @@
   <button onclick="enterApp()">들어가기</button>
 </div>
 
+<!-- 메뉴 -->
 <div id="menuScreen" class="hidden">
   <header id="schoolName">🏫 학교</header>
   <div class="container">
@@ -56,6 +58,7 @@
   </div>
 </div>
 
+<!-- 시간표 -->
 <div id="timetable" class="hidden">
   <header>📅 시간표</header>
 
@@ -79,6 +82,7 @@
   <button onclick="goMenu()">← 메뉴로</button>
 </div>
 
+<!-- 급식 -->
 <div id="meal" class="hidden">
   <header>🍱 급식</header>
   <div class="card" id="mealContent"></div>
@@ -86,15 +90,18 @@
 </div>
 
 <script>
-// 공통
+// ================= 공통 =================
 function enterApp() {
   const school = document.getElementById("schoolSelect").value;
+
   if (school === "학교를 선택하세요") {
-    alert("학교 선택");
+    alert("학교를 선택해주세요!");
     return;
   }
+
   localStorage.setItem("school", school);
   document.getElementById("schoolName").innerText = "🏫 " + school;
+
   document.getElementById("selectScreen").classList.add("hidden");
   document.getElementById("menuScreen").classList.remove("hidden");
 }
@@ -114,20 +121,23 @@ function goMenu() {
 
 function goBack() {
   localStorage.removeItem("school");
+
   document.getElementById("menuScreen").classList.add("hidden");
   document.getElementById("selectScreen").classList.remove("hidden");
 }
 
-// 시간표
+// ================= 시간표 =================
 function saveClass() {
   const g = document.getElementById("gradeSelect").value;
   const c = document.getElementById("classSelect").value;
+
   localStorage.setItem("class", g + "-" + c);
+
   document.getElementById("timetableContent").innerHTML =
     `<h3>${g}-${c} 시간표</h3>`;
 }
 
-// 급식 (API)
+// ================= 급식 =================
 async function loadMeal() {
   const url = "https://meal-server-1.onrender.com/meal";
 
@@ -137,15 +147,11 @@ async function loadMeal() {
     const res = await fetch(url);
     const data = await res.json();
 
-    const meal = data.mealServiceDietInfo?.[1]?.row?.[0]?.DDISH_NM;
+    const meal = data.mealServiceDietInfo[1].row[0].DDISH_NM;
 
-    if (meal) {
-      meal.split("<br/>").forEach(f => {
-        html += `<p>${f}</p>`;
-      });
-    } else {
-      html += "<p>급식 없음</p>";
-    }
+    meal.split("<br/>").forEach(food => {
+      html += `<p>${food}</p>`;
+    });
 
   } catch {
     html += "<p>불러오기 실패</p>";
@@ -154,15 +160,17 @@ async function loadMeal() {
   document.getElementById("mealContent").innerHTML = html;
 }
 
-// 자동 로그인
+// ================= 자동 로그인 =================
 window.onload = () => {
   const saved = localStorage.getItem("school");
+
   if (saved) {
     document.getElementById("schoolName").innerText = "🏫 " + saved;
+
     document.getElementById("selectScreen").classList.add("hidden");
     document.getElementById("menuScreen").classList.remove("hidden");
   }
-}
+};
 </script>
 
 </body>
