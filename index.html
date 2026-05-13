@@ -127,15 +127,23 @@
 
     <div class="card">
 
-      <select id="gradeSelect">
+      <!-- 학년 -->
+      <select id="gradeSelect" onchange="toggleTrackSelect()">
         <option value="1">1학년</option>
         <option value="2">2학년</option>
         <option value="3">3학년</option>
       </select>
 
+      <!-- 반 -->
       <select id="classSelect">
         <option value="1">1반</option>
         <option value="2">2반</option>
+      </select>
+
+      <!-- 문과/이과 -->
+      <select id="trackSelect" class="hidden">
+        <option value="문과">문과</option>
+        <option value="이과">이과</option>
       </select>
 
       <br>
@@ -242,6 +250,26 @@ function goBack() {
     .classList.remove("hidden");
 }
 
+// ================= 문과/이과 표시 =================
+function toggleTrackSelect() {
+
+  const grade =
+    document.getElementById("gradeSelect").value;
+
+  const trackSelect =
+    document.getElementById("trackSelect");
+
+  if (grade === "3") {
+
+    trackSelect.classList.remove("hidden");
+
+  } else {
+
+    trackSelect.classList.add("hidden");
+
+  }
+}
+
 // ================= 시간표 =================
 async function loadTimetable() {
 
@@ -250,6 +278,9 @@ async function loadTimetable() {
 
   const classNum =
     document.getElementById("classSelect").value;
+
+  const track =
+    document.getElementById("trackSelect").value;
 
   const timetableContent =
     document.getElementById("timetableContent");
@@ -277,7 +308,7 @@ async function loadTimetable() {
 
     const url =
       `https://open.neis.go.kr/hub/hisTimetable` +
-      `?KEY=7578d97feec449a28b001c18538d22ed` +
+      `?KEY=여기에너API키` +
       `&Type=json` +
       `&ATPT_OFCDC_SC_CODE=J10` +
       `&SD_SCHUL_CODE=7530049` +
@@ -302,11 +333,38 @@ async function loadTimetable() {
       let html =
         `<h3>${grade}학년 ${classNum}반 시간표</h3>`;
 
+      if (grade === "3") {
+        html += `<p>${track}</p>`;
+      }
+
       data.hisTimetable[1].row
       .forEach(item => {
 
+        let subject =
+          item.ITRT_CNTNT;
+
+        // 음악/미술 같은 경우 분리
+        if (
+          grade === "3" &&
+          subject.includes("/")
+        ) {
+
+          const parts =
+            subject.split("/");
+
+          if (track === "문과") {
+
+            subject = parts[0];
+
+          } else {
+
+            subject = parts[1];
+
+          }
+        }
+
         html +=
-          `<p>${item.PERIO}교시 - ${item.ITRT_CNTNT}</p>`;
+          `<p>${item.PERIO}교시 - ${subject}</p>`;
 
       });
 
@@ -405,6 +463,8 @@ window.onload = () => {
     document.getElementById("menuScreen")
       .classList.remove("hidden");
   }
+
+  toggleTrackSelect();
 };
 
 </script>
