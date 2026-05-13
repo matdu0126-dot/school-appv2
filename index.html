@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>관인고등학교 앱</title>
+  <title>관인고등학교 통합앱</title>
 
   <style>
     * {
@@ -21,9 +21,9 @@
       background: linear-gradient(135deg, #4f8cff, #6aa8ff);
       color: white;
       padding: 25px;
+      text-align: center;
       font-size: 24px;
       font-weight: bold;
-      text-align: center;
       border-bottom-left-radius: 20px;
       border-bottom-right-radius: 20px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.15);
@@ -31,7 +31,7 @@
 
     .container {
       padding: 20px;
-      padding-bottom: 90px;
+      padding-bottom: 100px;
     }
 
     .card {
@@ -40,15 +40,12 @@
       padding: 20px;
       margin-bottom: 20px;
       box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-      transition: 0.2s;
     }
 
-    .card:hover {
-      transform: scale(1.01);
-    }
-
-    h2 {
-      margin-top: 0;
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 15px;
     }
 
     button, select {
@@ -68,22 +65,27 @@
     }
 
     button:hover {
-      opacity: 0.9;
+      opacity: 0.92;
     }
 
     select {
       background: #f5f5f5;
     }
 
-    .hidden {
-      display: none;
+    .meal-item,
+    .time-item,
+    .notice-item {
+      background: #f7f9fc;
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 10px;
     }
 
     .bottom-nav {
       position: fixed;
       bottom: 0;
       width: 100%;
-      height: 70px;
+      height: 75px;
       background: white;
       display: flex;
       justify-content: space-around;
@@ -95,48 +97,54 @@
     .nav-btn {
       background: none;
       border: none;
+      color: #666;
       font-size: 14px;
-      color: #555;
       cursor: pointer;
     }
 
-    .nav-btn.active {
-      color: #4f8cff;
-      font-weight: bold;
+    .section {
+      display: none;
     }
 
-    .meal-item,
-    .time-item {
-      background: #f7f9fc;
-      border-radius: 12px;
-      padding: 12px;
-      margin-top: 10px;
+    .active-section {
+      display: block;
     }
 
-    .title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 10px;
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .small {
+      font-size: 13px;
+      color: #777;
+      margin-top: 5px;
     }
   </style>
 </head>
 <body>
 
 <header>
-  🏫 관인고등학교
+  🏫 관인고등학교 통합앱
 </header>
 
 <div class="container">
 
   <!-- 홈 -->
-  <div id="homePage">
+  <div id="homeSection" class="section active-section">
 
     <div class="card">
       <div class="title">👋 환영합니다</div>
-      <p>관인고등학교 학생 앱입니다.</p>
+
+      <p>
+        급식, 시간표, 공지사항,
+        가정통신문을 한 번에 확인하세요.
+      </p>
     </div>
 
+    <!-- 급식 -->
     <div class="card">
+
       <div class="title">🍱 오늘 급식</div>
 
       <div id="mealContent">
@@ -144,12 +152,15 @@
       </div>
 
       <button onclick="loadMeal()">
-        새로고침
+        급식 새로고침
       </button>
+
     </div>
 
+    <!-- 시간표 -->
     <div class="card">
-      <div class="title">📅 시간표</div>
+
+      <div class="title">📅 오늘 시간표</div>
 
       <select id="gradeSelect">
         <option value="1">1학년</option>
@@ -167,6 +178,66 @@
       </button>
 
       <div id="timetableContent"></div>
+
+    </div>
+
+  </div>
+
+  <!-- 공지사항 -->
+  <div id="noticeSection" class="section">
+
+    <div class="card">
+
+      <div class="title">📢 공지사항</div>
+
+      <a href="https://gwanin-h.gpoe.kr" target="_blank">
+
+        <div class="notice-item">
+          학교 홈페이지 바로가기
+          <div class="small">
+            공지사항 확인 가능
+          </div>
+        </div>
+
+      </a>
+
+      <a href="https://gwanin-h.gpoe.kr/gwanin-h/main.do" target="_blank">
+
+        <div class="notice-item">
+          학사일정 확인
+          <div class="small">
+            시험 · 행사 일정
+          </div>
+        </div>
+
+      </a>
+
+    </div>
+
+  </div>
+
+  <!-- 가정통신문 -->
+  <div id="paperSection" class="section">
+
+    <div class="card">
+
+      <div class="title">📄 가정통신문</div>
+
+      <a href="https://gwanin-h.gpoe.kr" target="_blank">
+
+        <div class="notice-item">
+          가정통신문 바로가기
+          <div class="small">
+            학교 홈페이지에서 확인
+          </div>
+        </div>
+
+      </a>
+
+      <div class="notice-item">
+        📌 추후 앱 내부 표시 예정
+      </div>
+
     </div>
 
   </div>
@@ -176,21 +247,38 @@
 <!-- 하단 메뉴 -->
 <div class="bottom-nav">
 
-  <button class="nav-btn active">
+  <button class="nav-btn"
+    onclick="showSection('homeSection')">
     🏠 홈
   </button>
 
-  <button class="nav-btn" onclick="loadMeal()">
-    🍱 급식
+  <button class="nav-btn"
+    onclick="showSection('noticeSection')">
+    📢 공지
   </button>
 
-  <button class="nav-btn" onclick="loadTimetable()">
-    📅 시간표
+  <button class="nav-btn"
+    onclick="showSection('paperSection')">
+    📄 가정통신문
   </button>
 
 </div>
 
 <script>
+
+// ================= 화면 전환 =================
+function showSection(sectionId) {
+
+  const sections =
+    document.querySelectorAll(".section");
+
+  sections.forEach(section => {
+    section.classList.remove("active-section");
+  });
+
+  document.getElementById(sectionId)
+    .classList.add("active-section");
+}
 
 // ================= 급식 =================
 async function loadMeal() {
@@ -249,7 +337,7 @@ async function loadMeal() {
     console.log(error);
 
     mealContent.innerHTML =
-      "불러오기 실패";
+      "급식 불러오기 실패";
 
   }
 }
@@ -344,7 +432,7 @@ async function loadTimetable() {
   }
 }
 
-// 자동 로드
+// ================= 자동 실행 =================
 window.onload = () => {
 
   loadMeal();
