@@ -1,284 +1,259 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    >
+<title>관인고등학교 통합앱</title>
 
-    <title>관인고등학교 통합앱</title>
+<style>
+* {
+    box-sizing: border-box;
+}
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+body {
+    margin: 0;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans KR",
+        sans-serif;
+    background: #f5f7fb;
+    color: #222;
+    padding-bottom: 80px;
+}
 
-        body {
-            margin: 0;
-            font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                "Noto Sans KR",
-                sans-serif;
-            background: #f5f7fb;
-            color: #222;
-            padding-bottom: 80px;
-        }
+header {
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    color: white;
+    padding: 22px 18px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+}
 
-        header {
-            background: linear-gradient(135deg, #2563eb, #4f46e5);
-            color: white;
-            padding: 22px 18px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
-        }
+header h1 {
+    margin: 0;
+    font-size: 21px;
+}
 
-        header h1 {
-            margin: 0;
-            font-size: 21px;
-            font-weight: 800;
-        }
+header p {
+    margin: 6px 0 0;
+    font-size: 13px;
+    opacity: .9;
+}
 
-        header p {
-            margin: 6px 0 0;
-            font-size: 13px;
-            opacity: 0.9;
-        }
+main {
+    max-width: 900px;
+    margin: auto;
+    padding: 16px;
+}
 
-        main {
-            padding: 16px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
+.section {
+    margin-bottom: 20px;
+}
 
-        .section {
-            margin-bottom: 20px;
-        }
+.section-title {
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 0 10px;
+}
 
-        .section-title {
-            font-size: 18px;
-            font-weight: 800;
-            margin: 0 0 10px;
-        }
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.06);
+}
 
-        .card {
-            background: white;
-            border-radius: 16px;
-            padding: 17px;
-            margin-bottom: 12px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-        }
+.loading {
+    color: #777;
+    font-size: 14px;
+}
 
-        .meal-date {
-            font-size: 13px;
-            color: #777;
-            margin-bottom: 10px;
-        }
+.error {
+    color: #dc2626;
+    font-size: 14px;
+}
 
-        .meal-title {
-            font-size: 17px;
-            font-weight: 800;
-            margin-bottom: 10px;
-        }
+.select-row {
+    display: flex;
+    gap: 8px;
+}
 
-        .meal-menu {
-            line-height: 1.8;
-            font-size: 15px;
-        }
+select {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 11px;
+    font-size: 14px;
+    background: white;
+}
 
-        .loading {
-            color: #777;
-            font-size: 14px;
-        }
+.refresh-btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+    border: 0;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+}
 
-        .error {
-            color: #dc2626;
-            font-size: 14px;
-        }
+.meal-date {
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
 
-        .select-row {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
+.meal-title {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
 
-        select {
-            flex: 1;
-            min-width: 0;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 11px;
-            font-size: 14px;
-            background: white;
-        }
+.meal-menu {
+    white-space: pre-line;
+    line-height: 1.8;
+    font-size: 15px;
+}
 
-        .timetable-card {
-            overflow-x: auto;
-        }
+.timetable-card {
+    overflow-x: auto;
+}
 
-        .week-table {
-            width: 100%;
-            min-width: 650px;
-            border-collapse: collapse;
-            table-layout: fixed;
-        }
+.week-table {
+    width: 100%;
+    min-width: 650px;
+    border-collapse: collapse;
+}
 
-        .week-table th {
-            background: #f1f5f9;
-            font-weight: 800;
-            font-size: 13px;
-            padding: 10px 5px;
-            border: 1px solid #e5e7eb;
-        }
+.week-table th {
+    background: #f1f5f9;
+    border: 1px solid #e5e7eb;
+    padding: 10px 5px;
+    font-size: 13px;
+}
 
-        .week-table td {
-            border: 1px solid #e5e7eb;
-            padding: 7px;
-            text-align: center;
-            vertical-align: middle;
-            height: 65px;
-            font-size: 13px;
-        }
+.week-table td {
+    border: 1px solid #e5e7eb;
+    text-align: center;
+    vertical-align: middle;
+    padding: 7px;
+    min-height: 65px;
+}
 
-        .period-cell {
-            width: 55px;
-            background: #f8fafc;
-            font-weight: 800;
-        }
+.period {
+    width: 55px;
+    background: #f8fafc;
+    font-weight: 800;
+}
 
-        .subject {
-            font-weight: 700;
-            white-space: pre-line;
-            line-height: 1.4;
-        }
+.subject-box {
+    padding: 4px 0;
+}
 
-        .teacher {
-            font-size: 11px;
-            color: #888;
-            margin-top: 3px;
-        }
+.subject {
+    font-weight: 700;
+    white-space: pre-line;
+    line-height: 1.4;
+}
 
-        .multiple-subject {
-            padding: 4px 0;
-        }
+.teacher {
+    color: #888;
+    font-size: 11px;
+    margin-top: 3px;
+}
 
-        .divider {
-            height: 1px;
-            background: #e5e7eb;
-            margin: 5px 0;
-        }
+.subject-divider {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 6px 0;
+}
 
-        .link-card {
-            display: block;
-            text-decoration: none;
-            color: inherit;
-            background: white;
-            border-radius: 16px;
-            padding: 17px;
-            margin-bottom: 10px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-        }
+.link-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: white;
+    border-radius: 16px;
+    padding: 17px;
+    margin-bottom: 10px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.06);
+}
 
-        .link-card strong {
-            display: block;
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
+.link-card strong {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
 
-        .link-card span {
-            color: #777;
-            font-size: 13px;
-        }
+.link-card span {
+    color: #777;
+    font-size: 13px;
+}
 
-        .notice {
-            background: white;
-            border-radius: 16px;
-            padding: 17px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-            color: #666;
-            font-size: 14px;
-            line-height: 1.6;
-        }
+.notice {
+    background: white;
+    border-radius: 16px;
+    padding: 17px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+    box-shadow: 0 3px 12px rgba(0,0,0,.06);
+}
 
-        .bottom-nav {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 65px;
-            background: white;
-            border-top: 1px solid #e5e7eb;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 200;
-        }
+.bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 65px;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 200;
+}
 
-        .nav-item {
-            border: none;
-            background: none;
-            font-size: 11px;
-            color: #777;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-            cursor: pointer;
-        }
+.nav-item {
+    border: 0;
+    background: none;
+    color: #777;
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+}
 
-        .nav-item span:first-child {
-            font-size: 21px;
-        }
+.nav-item span:first-child {
+    font-size: 21px;
+}
 
-        .nav-item.active {
-            color: #2563eb;
-            font-weight: 700;
-        }
+.nav-item.active {
+    color: #2563eb;
+    font-weight: 700;
+}
 
-        .refresh-btn {
-            width: 100%;
-            border: none;
-            border-radius: 11px;
-            padding: 12px;
-            background: #2563eb;
-            color: white;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 10px;
-        }
+@media (max-width: 600px) {
+    main {
+        padding: 12px;
+    }
 
-        .today-badge {
-            display: inline-block;
-            padding: 4px 8px;
-            background: #dbeafe;
-            color: #2563eb;
-            border-radius: 999px;
-            font-size: 11px;
-            font-weight: 700;
-            margin-left: 5px;
-        }
-
-        @media (max-width: 600px) {
-            main {
-                padding: 12px;
-            }
-
-            .card {
-                padding: 14px;
-            }
-
-            .week-table {
-                min-width: 620px;
-            }
-        }
-    </style>
+    .week-table {
+        min-width: 620px;
+    }
+}
+</style>
 </head>
+
 
 <body>
 
@@ -287,159 +262,246 @@
     <p>학교생활에 필요한 정보를 한 곳에서</p>
 </header>
 
+
 <main>
 
-    <!-- =========================
-         홈
-    ========================== -->
-    <section id="home-section">
+<!-- =========================
+     급식
+========================= -->
 
-        <!-- 급식 -->
-        <div class="section">
+<section class="section">
 
-            <h2 class="section-title">
-                🍚 오늘의 급식
-            </h2>
+    <h2 class="section-title">
+        🍚 오늘의 급식
+    </h2>
 
-            <div class="card">
+    <div class="card">
 
-                <div class="meal-date" id="meal-date">
-                    불러오는 중...
-                </div>
+        <div
+            id="meal-date"
+            class="meal-date"
+        >
+            불러오는 중...
+        </div>
 
-                <div class="meal-title">
-                    오늘의 식단
-                </div>
+        <div class="meal-title">
+            오늘의 식단
+        </div>
 
-                <div id="meal-result" class="loading">
-                    급식 정보를 불러오는 중입니다...
-                </div>
+        <div
+            id="meal-result"
+            class="loading"
+        >
+            급식 정보를 불러오는 중입니다...
+        </div>
 
-            </div>
+    </div>
+
+</section>
+
+
+<!-- =========================
+     시간표
+========================= -->
+
+<section class="section">
+
+    <h2 class="section-title">
+        📚 이번 주 시간표
+    </h2>
+
+    <div class="card">
+
+        <div class="select-row">
+
+            <select id="grade-select">
+
+                <option value="1">
+                    1학년
+                </option>
+
+                <option value="2">
+                    2학년
+                </option>
+
+                <option value="3">
+                    3학년
+                </option>
+
+            </select>
+
+
+            <select id="class-select">
+
+                <option value="1">
+                    1반
+                </option>
+
+                <option value="2">
+                    2반
+                </option>
+
+                <option value="3">
+                    3반
+                </option>
+
+                <option value="4">
+                    4반
+                </option>
+
+                <option value="5">
+                    5반
+                </option>
+
+                <option value="6">
+                    6반
+                </option>
+
+                <option value="7">
+                    7반
+                </option>
+
+                <option value="8">
+                    8반
+                </option>
+
+                <option value="9">
+                    9반
+                </option>
+
+                <option value="10">
+                    10반
+                </option>
+
+            </select>
 
         </div>
 
 
-        <!-- 시간표 -->
-        <div class="section">
+        <button
+            class="refresh-btn"
+            onclick="loadWeeklyTimetable()"
+        >
+            🔄 시간표 새로고침
+        </button>
 
-            <h2 class="section-title">
-                📚 이번 주 시간표
-            </h2>
+    </div>
 
-            <div class="card">
 
-                <div class="select-row">
+    <div class="card timetable-card">
 
-                    <select id="grade-select">
-                        <option value="1">1학년</option>
-                        <option value="2">2학년</option>
-                        <option value="3">3학년</option>
-                    </select>
-
-                    <select id="class-select">
-                        <option value="1">1반</option>
-                        <option value="2">2반</option>
-                        <option value="3">3반</option>
-                        <option value="4">4반</option>
-                        <option value="5">5반</option>
-                        <option value="6">6반</option>
-                        <option value="7">7반</option>
-                        <option value="8">8반</option>
-                        <option value="9">9반</option>
-                        <option value="10">10반</option>
-                    </select>
-
-                </div>
-
-                <button
-                    class="refresh-btn"
-                    onclick="loadWeeklyTimetable()"
-                >
-                    🔄 시간표 새로고침
-                </button>
-
-            </div>
-
-            <div class="card timetable-card">
-
-                <div id="timetable-result" class="loading">
-                    시간표를 불러오는 중입니다...
-                </div>
-
-            </div>
-
+        <div
+            id="timetable-result"
+            class="loading"
+        >
+            시간표를 불러오는 중입니다...
         </div>
 
+    </div>
 
-        <!-- 학교 정보 -->
-        <div class="section">
-
-            <h2 class="section-title">
-                🏫 학교 정보
-            </h2>
-
-            <a
-                class="link-card"
-                href="https://www.goepc.kr/kwanin-h/main.do"
-                target="_blank"
-            >
-                <strong>🌐 학교 홈페이지</strong>
-                <span>관인고등학교 공식 홈페이지</span>
-            </a>
-
-            <a
-                class="link-card"
-                href="https://www.goepc.kr/kwanin-h/ps/schdul/selectSchdulMainList.do?mi=4297"
-                target="_blank"
-            >
-                <strong>📅 학교 일정</strong>
-                <span>학사일정 및 학교 행사 확인</span>
-            </a>
-
-            <a
-                class="link-card"
-                href="https://www.goepc.kr/kwanin-h/na/ntt/selectNttList.do?mi=4244&bbsId=3241"
-                target="_blank"
-            >
-                <strong>📄 가정통신문</strong>
-                <span>학교에서 발송한 가정통신문 확인</span>
-            </a>
-
-        </div>
+</section>
 
 
-        <!-- 공지사항 -->
-        <div class="section">
+<!-- =========================
+     학교 정보
+========================= -->
 
-            <h2 class="section-title">
-                📢 공지사항
-            </h2>
+<section class="section">
 
-            <div class="notice">
-                학교 홈페이지에서 최신 공지사항을 확인할 수 있습니다.
-            </div>
+    <h2 class="section-title">
+        🏫 학교 정보
+    </h2>
 
-        </div>
 
-    </section>
+    <a
+        class="link-card"
+        href="https://www.goepc.kr/kwanin-h/main.do"
+        target="_blank"
+    >
+
+        <strong>
+            🌐 학교 홈페이지
+        </strong>
+
+        <span>
+            관인고등학교 공식 홈페이지
+        </span>
+
+    </a>
+
+
+    <a
+        class="link-card"
+        href="https://www.goepc.kr/kwanin-h/ps/schdul/selectSchdulMainList.do?mi=4297"
+        target="_blank"
+    >
+
+        <strong>
+            📅 학교 일정
+        </strong>
+
+        <span>
+            학사일정 및 학교 행사
+        </span>
+
+    </a>
+
+
+    <a
+        class="link-card"
+        href="https://www.goepc.kr/kwanin-h/na/ntt/selectNttList.do?mi=4244&bbsId=3241"
+        target="_blank"
+    >
+
+        <strong>
+            📄 가정통신문
+        </strong>
+
+        <span>
+            학교 가정통신문 확인
+        </span>
+
+    </a>
+
+</section>
+
+
+<!-- =========================
+     공지
+========================= -->
+
+<section class="section">
+
+    <h2 class="section-title">
+        📢 공지사항
+    </h2>
+
+    <div class="notice">
+
+        학교 홈페이지에서 최신 공지사항을
+        확인할 수 있습니다.
+
+    </div>
+
+</section>
 
 </main>
 
 
 <!-- =========================
-     하단 네비게이션
-========================== -->
+     하단 메뉴
+========================= -->
 
 <nav class="bottom-nav">
 
     <button
         class="nav-item active"
-        onclick="scrollToTop()"
+        onclick="scrollTopPage()"
     >
         <span>🏠</span>
         <span>홈</span>
     </button>
+
 
     <button
         class="nav-item"
@@ -449,6 +511,7 @@
         <span>급식</span>
     </button>
 
+
     <button
         class="nav-item"
         onclick="scrollToTimetable()"
@@ -457,6 +520,7 @@
         <span>시간표</span>
     </button>
 
+
     <button
         class="nav-item"
         onclick="openSchedule()"
@@ -464,6 +528,7 @@
         <span>📅</span>
         <span>일정</span>
     </button>
+
 
     <button
         class="nav-item"
@@ -478,69 +543,45 @@
 
 <script>
 
-/* =========================================================
+/* =====================================================
    기본 설정
-========================================================= */
+===================================================== */
 
-// ⚠️ 여기에 네가 발급받은 NEIS API KEY를 입력
-const NEIS_KEY = "7578d97feec449a28b001c18538d22ed";
+const NEIS_KEY =
+    "7578d97feec449a28b001c18538d22ed";
 
-const OFFICE_CODE = "J10";
-const SCHOOL_CODE = "7530049";
+const OFFICE_CODE =
+    "J10";
+
+const SCHOOL_CODE =
+    "7530049";
 
 const MEAL_SERVER =
     "https://meal-server-1.onrender.com/meal";
 
 
-/* =========================================================
+/* =====================================================
    날짜
-========================================================= */
+===================================================== */
 
 function formatDate(date) {
 
-    const year = date.getFullYear();
+    const year =
+        date.getFullYear();
 
     const month =
-        String(date.getMonth() + 1)
-            .padStart(2, "0");
+        String(
+            date.getMonth() + 1
+        ).padStart(2, "0");
 
     const day =
-        String(date.getDate())
-            .padStart(2, "0");
+        String(
+            date.getDate()
+        ).padStart(2, "0");
 
     return `${year}-${month}-${day}`;
 }
 
-
-function formatKoreanDate(date) {
-
-    const month =
-        date.getMonth() + 1;
-
-    const day =
-        date.getDate();
-
-    const weekdays =
-        [
-            "일",
-            "월",
-            "화",
-            "수",
-            "목",
-            "금",
-            "토"
-        ];
-
-    const weekday =
-        weekdays[date.getDay()];
-
-    return `${month}월 ${day}일 (${weekday})`;
-}
-
-
-/* =========================================================
-   월요일 구하기
-========================================================= */
 
 function getMonday(date) {
 
@@ -550,24 +591,29 @@ function getMonday(date) {
     const day =
         result.getDay();
 
-    const diff =
+    const difference =
         day === 0
             ? -6
             : 1 - day;
 
     result.setDate(
-        result.getDate() + diff
+        result.getDate() + difference
     );
 
-    result.setHours(0, 0, 0, 0);
+    result.setHours(
+        0,
+        0,
+        0,
+        0
+    );
 
     return result;
 }
 
 
-/* =========================================================
+/* =====================================================
    급식
-========================================================= */
+===================================================== */
 
 async function loadMeal() {
 
@@ -576,7 +622,7 @@ async function loadMeal() {
             "meal-result"
         );
 
-    const dateText =
+    const dateElement =
         document.getElementById(
             "meal-date"
         );
@@ -584,14 +630,19 @@ async function loadMeal() {
     const today =
         new Date();
 
-    dateText.textContent =
-        formatKoreanDate(today);
+    dateElement.textContent =
+        `${today.getFullYear()}년 ${
+            today.getMonth() + 1
+        }월 ${
+            today.getDate()
+        }일`;
 
     result.className =
         "loading";
 
     result.textContent =
         "급식 정보를 불러오는 중입니다...";
+
 
     try {
 
@@ -602,22 +653,24 @@ async function loadMeal() {
 
         if (!response.ok) {
             throw new Error(
-                "급식 서버 응답 오류"
+                "급식 서버 오류"
             );
         }
 
         const data =
             await response.json();
 
-        console.log(
-            "급식 데이터:",
-            data
-        );
-
         const rows =
-            data?.mealServiceDietInfo?.[1]?.row;
+            data
+                ?.mealServiceDietInfo
+                ?.[1]
+                ?.row;
 
-        if (!rows || rows.length === 0) {
+
+        if (
+            !rows ||
+            rows.length === 0
+        ) {
 
             result.className =
                 "error";
@@ -628,21 +681,17 @@ async function loadMeal() {
             return;
         }
 
-        let todayMeal = null;
 
         const todayString =
             formatDate(today);
 
-        for (const row of rows) {
+        const todayMeal =
+            rows.find(
+                row =>
+                    row?.MLSV_YMD ===
+                    todayString
+            );
 
-            const date =
-                row?.MLSV_YMD;
-
-            if (date === todayString) {
-                todayMeal = row;
-                break;
-            }
-        }
 
         if (!todayMeal) {
 
@@ -655,22 +704,35 @@ async function loadMeal() {
             return;
         }
 
+
         let menu =
             todayMeal.DDISH_NM || "";
 
+
         menu =
             menu
-                .replace(/<br\/>/gi, "\n")
-                .replace(/<br>/gi, "\n")
-                .replace(/\([^)]*\)/g, "")
-                .replace(/\*/g, "")
+                .replace(
+                    /<br\/?>/gi,
+                    "\n"
+                )
+                .replace(
+                    /\([^)]*\)/g,
+                    ""
+                )
+                .replace(
+                    /\*/g,
+                    ""
+                )
                 .trim();
+
 
         result.className =
             "meal-menu";
 
-        result.innerText =
-            menu || "급식 정보가 없습니다.";
+        result.textContent =
+            menu ||
+            "급식 정보가 없습니다.";
+
 
     } catch (error) {
 
@@ -688,56 +750,220 @@ async function loadMeal() {
 }
 
 
-/* =========================================================
-   시간표 URL
-========================================================= */
+/* =====================================================
+   NEIS 기본 URL
+===================================================== */
 
-function makeTimetableUrl(
-    dateString,
+function createNeisUrl(
+    date,
     grade,
-    classNumber
+    classNumber = null
 ) {
 
     const params =
-        new URLSearchParams({
+        new URLSearchParams();
 
-            Type: "json",
+    params.set(
+        "KEY",
+        NEIS_KEY
+    );
 
-            pIndex: "1",
+    params.set(
+        "Type",
+        "json"
+    );
 
-            pSize: "100",
+    params.set(
+        "pIndex",
+        "1"
+    );
 
-            ATPT_OFCDC_SC_CODE:
-                OFFICE_CODE,
+    params.set(
+        "pSize",
+        "1000"
+    );
 
-            SD_SCHUL_CODE:
-                SCHOOL_CODE,
+    params.set(
+        "ATPT_OFCDC_SC_CODE",
+        OFFICE_CODE
+    );
 
-            ALL_TI_YMD:
-                dateString,
+    params.set(
+        "SD_SCHUL_CODE",
+        SCHOOL_CODE
+    );
 
-            GRADE:
-                String(grade),
+    params.set(
+        "ALL_TI_YMD",
+        formatDate(date)
+    );
 
-            CLASS_NM:
-                String(classNumber),
+    params.set(
+        "GRADE",
+        String(grade)
+    );
 
-            KEY:
-                NEIS_KEY
-        });
+
+    /*
+     * ⭐ 중요
+     *
+     * 1, 2학년은 선택한 반으로 요청
+     *
+     * 3학년은 classNumber를 넣지 않고
+     * 일단 3학년 전체 시간표를 요청한다.
+     *
+     * 그래서 기존의
+     *
+     * GRADE=3&CLASS_NM=2
+     *
+     * 때문에 INFO-200이 나오는 문제를 피한다.
+     */
+
+    if (
+        String(grade) !== "3" &&
+        classNumber !== null
+    ) {
+
+        params.set(
+            "CLASS_NM",
+            String(classNumber)
+        );
+    }
+
 
     return (
         "https://open.neis.go.kr/hub/hisTimetable?"
-        + params.toString()
+        +
+        params.toString()
     );
 }
 
 
-/* =========================================================
-   과목명 가져오기
-========================================================= */
+/* =====================================================
+   NEIS 데이터 가져오기
+===================================================== */
 
-function getSubjectFromRow(row) {
+async function getTimetableData(
+    date,
+    grade,
+    classNumber
+) {
+
+    const url =
+        createNeisUrl(
+            date,
+            grade,
+            classNumber
+        );
+
+
+    console.log(
+        "=============================="
+    );
+
+    console.log(
+        "시간표 요청 날짜:",
+        formatDate(date)
+    );
+
+    console.log(
+        "학년:",
+        grade
+    );
+
+    console.log(
+        "선택 반:",
+        classNumber
+    );
+
+    console.log(
+        "요청 URL:",
+        url
+    );
+
+
+    try {
+
+        const response =
+            await fetch(url);
+
+        const text =
+            await response.text();
+
+
+        console.log(
+            "NEIS 응답:",
+            text
+        );
+
+
+        if (!response.ok) {
+
+            console.error(
+                "HTTP 오류:",
+                response.status
+            );
+
+            return [];
+        }
+
+
+        const data =
+            JSON.parse(text);
+
+
+        if (
+            data?.RESULT?.CODE ===
+            "INFO-200"
+        ) {
+
+            console.warn(
+                "NEIS 데이터 없음:",
+                formatDate(date),
+                grade,
+                classNumber
+            );
+
+            return [];
+        }
+
+
+        const rows =
+            data
+                ?.hisTimetable
+                ?.[1]
+                ?.row;
+
+
+        if (
+            !rows ||
+            !Array.isArray(rows)
+        ) {
+
+            return [];
+        }
+
+
+        return rows;
+
+
+    } catch (error) {
+
+        console.error(
+            "NEIS 요청 실패:",
+            error
+        );
+
+        return [];
+    }
+}
+
+
+/* =====================================================
+   과목명
+===================================================== */
+
+function getSubject(row) {
 
     return (
         row?.ITRT_CNTNT ||
@@ -748,11 +974,11 @@ function getSubjectFromRow(row) {
 }
 
 
-/* =========================================================
-   교사명 가져오기
-========================================================= */
+/* =====================================================
+   교사명
+===================================================== */
 
-function getTeacherFromRow(row) {
+function getTeacher(row) {
 
     return (
         row?.TEACHER_NM ||
@@ -761,160 +987,216 @@ function getTeacherFromRow(row) {
 }
 
 
-/* =========================================================
-   과목 처리
-   ⭐ 문과/이과 구분 없음
-   ⭐ 같은 교시 여러 과목 전부 표시
-========================================================= */
-
-function processSubject(subject) {
-
-    if (!subject) {
-        return "-";
-    }
-
-    return String(subject)
-        .replace(
-            /<br\s*\/?>/gi,
-            "\n"
-        )
-        .trim();
-}
-
-
-/* =========================================================
-   HTML 안전 처리
-========================================================= */
+/* =====================================================
+   HTML escape
+===================================================== */
 
 function escapeHtml(value) {
 
     return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
 }
 
 
-/* =========================================================
-   하루 시간표 가져오기
-========================================================= */
+/* =====================================================
+   ⭐ 3학년 실제 반 찾기
+===================================================== */
 
-async function fetchDayTimetable(
+function getActualClass(row) {
+
+    return (
+        row?.CLASS_NM ||
+        row?.CLRM_NM ||
+        row?.CLRM_NO ||
+        ""
+    );
+}
+
+
+/* =====================================================
+   ⭐ 3학년 전체 데이터에서 선택 반 찾기
+===================================================== */
+
+function filterThirdGradeClass(
+    rows,
+    selectedClass
+) {
+
+    const wanted =
+        String(selectedClass).trim();
+
+
+    console.log(
+        "3학년 전체 데이터:",
+        rows
+    );
+
+
+    /*
+     * 실제 NEIS의 CLASS_NM 목록 확인
+     */
+
+    const classes =
+        [
+            ...new Set(
+                rows
+                    .map(
+                        row =>
+                            String(
+                                getActualClass(row)
+                            ).trim()
+                    )
+                    .filter(Boolean)
+            )
+        ];
+
+
+    console.log(
+        "⭐ NEIS에 실제 존재하는 3학년 반:",
+        classes
+    );
+
+
+    /*
+     * 일반적인 경우
+     * CLASS_NM = "1", "2", "3"...
+     */
+
+    let filtered =
+        rows.filter(
+            row =>
+                String(
+                    getActualClass(row)
+                ).trim() === wanted
+        );
+
+
+    /*
+     * "2반" 형태로 저장된 경우
+     */
+
+    if (
+        filtered.length === 0
+    ) {
+
+        filtered =
+            rows.filter(
+                row => {
+
+                    const value =
+                        String(
+                            getActualClass(row)
+                        )
+                        .trim();
+
+                    return (
+                        value ===
+                        `${wanted}반`
+                    );
+                }
+            );
+    }
+
+
+    /*
+     * "3-2" 형태로 저장된 경우
+     */
+
+    if (
+        filtered.length === 0
+    ) {
+
+        filtered =
+            rows.filter(
+                row => {
+
+                    const value =
+                        String(
+                            getActualClass(row)
+                        )
+                        .trim();
+
+                    return (
+                        value ===
+                        `3-${wanted}`
+                    );
+                }
+            );
+    }
+
+
+    console.log(
+        "⭐ 선택된 3학년 데이터:",
+        filtered
+    );
+
+
+    return filtered;
+}
+
+
+/* =====================================================
+   하루 시간표
+===================================================== */
+
+async function getDayTimetable(
     date,
     grade,
     classNumber
 ) {
 
-    const dateString =
-        formatDate(date);
-
-    const url =
-        makeTimetableUrl(
-            dateString,
+    const rows =
+        await getTimetableData(
+            date,
             grade,
             classNumber
         );
 
-    console.log(
-        "시간표 요청:",
-        dateString,
-        "학년:",
-        grade,
-        "반:",
-        classNumber
-    );
 
-    try {
+    /*
+     * 3학년
+     *
+     * 전체 데이터를 받은 뒤
+     * 실제 반을 찾아서 필터링
+     */
 
-        const response =
-            await fetch(url);
+    if (
+        String(grade) === "3"
+    ) {
 
-        const text =
-            await response.text();
-
-        console.log(
-            "NEIS 원본:",
-            dateString,
-            text
+        return filterThirdGradeClass(
+            rows,
+            classNumber
         );
-
-        if (!response.ok) {
-
-            console.error(
-                "NEIS HTTP 오류:",
-                response.status
-            );
-
-            return [];
-        }
-
-        let data;
-
-        try {
-
-            data =
-                JSON.parse(text);
-
-        } catch (jsonError) {
-
-            console.error(
-                "JSON 변환 실패:",
-                jsonError
-            );
-
-            return [];
-        }
-
-
-        /* 데이터 없음 */
-
-        if (
-            data?.RESULT?.CODE ===
-            "INFO-200"
-        ) {
-
-            console.warn(
-                "시간표 데이터 없음:",
-                dateString
-            );
-
-            return [];
-        }
-
-
-        const rows =
-            data?.hisTimetable?.[1]?.row;
-
-        if (!rows) {
-
-            console.warn(
-                "시간표 row 없음:",
-                dateString
-            );
-
-            return [];
-        }
-
-        return rows;
-
-    } catch (error) {
-
-        console.error(
-            "시간표 요청 오류:",
-            dateString,
-            error
-        );
-
-        return [];
     }
+
+
+    return rows;
 }
 
 
-/* =========================================================
-   주간 시간표 만들기
-========================================================= */
+/* =====================================================
+   주간 시간표
+===================================================== */
 
 async function loadWeeklyTimetable() {
 
@@ -923,22 +1205,17 @@ async function loadWeeklyTimetable() {
             "timetable-result"
         );
 
+
     const grade =
         document.getElementById(
             "grade-select"
         ).value;
 
+
     const classNumber =
         document.getElementById(
             "class-select"
         ).value;
-
-
-    result.className =
-        "loading";
-
-    result.innerHTML =
-        "이번 주 시간표를 불러오는 중입니다...";
 
 
     if (
@@ -950,21 +1227,28 @@ async function loadWeeklyTimetable() {
         result.className =
             "error";
 
-        result.innerHTML =
+        result.textContent =
             "NEIS API KEY를 입력해주세요.";
 
         return;
     }
 
 
-    const today =
-        new Date();
+    result.className =
+        "loading";
+
+    result.textContent =
+        "이번 주 시간표를 불러오는 중입니다...";
+
 
     const monday =
-        getMonday(today);
+        getMonday(
+            new Date()
+        );
 
 
-    const weekDates = [];
+    const dates = [];
+
 
     for (
         let i = 0;
@@ -979,17 +1263,21 @@ async function loadWeeklyTimetable() {
             monday.getDate() + i
         );
 
-        weekDates.push(date);
+        dates.push(date);
     }
 
 
     try {
 
-        const dailyResults =
+        /*
+         * 월~금 모두 요청
+         */
+
+        const weekData =
             await Promise.all(
-                weekDates.map(
+                dates.map(
                     date =>
-                        fetchDayTimetable(
+                        getDayTimetable(
                             date,
                             grade,
                             classNumber
@@ -998,28 +1286,39 @@ async function loadWeeklyTimetable() {
             );
 
 
-        /* -----------------------------------------
-           교시별 데이터 저장
-        ----------------------------------------- */
+        console.log(
+            "⭐ 최종 주간 시간표 데이터:",
+            weekData
+        );
+
+
+        /*
+         * 교시별 정리
+         */
 
         const timetable = {};
 
+
         for (
-            let dayIndex = 0;
-            dayIndex < 5;
-            dayIndex++
+            let day = 0;
+            day < 5;
+            day++
         ) {
 
             const rows =
-                dailyResults[dayIndex];
+                weekData[day];
 
-            for (const row of rows) {
+
+            for (
+                const row of rows
+            ) {
 
                 const period =
                     parseInt(
                         row?.PERIO,
                         10
                     );
+
 
                 if (
                     Number.isNaN(period)
@@ -1032,18 +1331,17 @@ async function loadWeeklyTimetable() {
                     !timetable[period]
                 ) {
 
-                    timetable[period] =
-                        {
-                            0: [],
-                            1: [],
-                            2: [],
-                            3: [],
-                            4: []
-                        };
+                    timetable[period] = {
+                        0: [],
+                        1: [],
+                        2: [],
+                        3: [],
+                        4: []
+                    };
                 }
 
 
-                timetable[period][dayIndex]
+                timetable[period][day]
                     .push(row);
             }
         }
@@ -1053,21 +1351,28 @@ async function loadWeeklyTimetable() {
             Object.keys(timetable)
                 .map(Number)
                 .sort(
-                    (a, b) => a - b
+                    (a,b) => a-b
                 );
 
 
-        if (periods.length === 0) {
+        /*
+         * 데이터 없음
+         */
+
+        if (
+            periods.length === 0
+        ) {
 
             result.className =
                 "error";
 
             result.innerHTML = `
-                이번 주 시간표를 찾지 못했습니다.
+                선택한 시간표를 찾지 못했습니다.
                 <br><br>
                 <small>
-                    선택한 학년/반의 NEIS 시간표 데이터가
-                    없는 경우 이렇게 표시될 수 있습니다.
+                    브라우저 콘솔(F12)을 확인하면
+                    NEIS가 실제로 어떤 3학년 반을
+                    보내는지 확인할 수 있습니다.
                 </small>
             `;
 
@@ -1075,67 +1380,57 @@ async function loadWeeklyTimetable() {
         }
 
 
-        /* -----------------------------------------
-           테이블 생성
-        ----------------------------------------- */
+        /*
+         * 테이블
+         */
 
         let html = `
             <table class="week-table">
 
                 <thead>
+
                     <tr>
-                        <th class="period-cell">
+
+                        <th class="period">
                             교시
                         </th>
 
-                        <th>
-                            월
-                        </th>
+                        <th>월</th>
+                        <th>화</th>
+                        <th>수</th>
+                        <th>목</th>
+                        <th>금</th>
 
-                        <th>
-                            화
-                        </th>
-
-                        <th>
-                            수
-                        </th>
-
-                        <th>
-                            목
-                        </th>
-
-                        <th>
-                            금
-                        </th>
                     </tr>
+
                 </thead>
 
                 <tbody>
         `;
 
 
-        for (const period of periods) {
+        for (
+            const period of periods
+        ) {
 
             html += `
                 <tr>
 
-                    <td class="period-cell">
+                    <td class="period">
                         ${period}
                     </td>
             `;
 
 
             for (
-                let dayIndex = 0;
-                dayIndex < 5;
-                dayIndex++
+                let day = 0;
+                day < 5;
+                day++
             ) {
 
                 const rows =
-                    timetable[period][dayIndex];
+                    timetable[period][day];
 
-
-                /* 해당 요일/교시에 과목 없음 */
 
                 if (
                     !rows ||
@@ -1143,41 +1438,41 @@ async function loadWeeklyTimetable() {
                 ) {
 
                     html += `
-                        <td>
-                            -
-                        </td>
+                        <td>-</td>
                     `;
 
                     continue;
                 }
 
 
-                /* -----------------------------------------
-                   같은 교시에 여러 과목이 있으면
-                   전부 표시
-                ----------------------------------------- */
+                /*
+                 * ⭐ 핵심
+                 *
+                 * 같은 교시에
+                 *
+                 * 미술
+                 * 음악
+                 *
+                 * 처럼 여러 과목이 있으면
+                 * 전부 표시한다.
+                 */
 
                 html += `<td>`;
 
 
                 rows.forEach(
-                    (row, rowIndex) => {
+                    (row, index) => {
 
                         const subject =
-                            processSubject(
-                                getSubjectFromRow(
-                                    row
-                                )
-                            );
+                            getSubject(row);
+
 
                         const teacher =
-                            getTeacherFromRow(
-                                row
-                            );
+                            getTeacher(row);
 
 
                         html += `
-                            <div class="multiple-subject">
+                            <div class="subject-box">
 
                                 <div class="subject">
                                     ${escapeHtml(
@@ -1187,14 +1482,16 @@ async function loadWeeklyTimetable() {
 
                                 ${
                                     teacher
-                                        ? `
-                                            <div class="teacher">
-                                                ${escapeHtml(
-                                                    teacher
-                                                )}
-                                            </div>
-                                          `
-                                        : ""
+                                    ?
+                                    `
+                                    <div class="teacher">
+                                        ${escapeHtml(
+                                            teacher
+                                        )}
+                                    </div>
+                                    `
+                                    :
+                                    ""
                                 }
 
                             </div>
@@ -1202,12 +1499,12 @@ async function loadWeeklyTimetable() {
 
 
                         if (
-                            rowIndex <
+                            index <
                             rows.length - 1
                         ) {
 
                             html += `
-                                <div class="divider"></div>
+                                <div class="subject-divider"></div>
                             `;
                         }
 
@@ -1236,6 +1533,7 @@ async function loadWeeklyTimetable() {
         result.innerHTML =
             html;
 
+
     } catch (error) {
 
         console.error(
@@ -1252,11 +1550,11 @@ async function loadWeeklyTimetable() {
 }
 
 
-/* =========================================================
-   스크롤
-========================================================= */
+/* =====================================================
+   이동
+===================================================== */
 
-function scrollToTop() {
+function scrollTopPage() {
 
     window.scrollTo({
         top: 0,
@@ -1267,43 +1565,33 @@ function scrollToTop() {
 
 function scrollToMeal() {
 
-    const element =
-        document.querySelector(
-            "#meal-result"
-        );
-
-    if (!element) {
-        return;
-    }
-
-    element.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-    });
+    document
+        .getElementById(
+            "meal-result"
+        )
+        .scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
 }
 
 
 function scrollToTimetable() {
 
-    const element =
-        document.querySelector(
-            "#timetable-result"
-        );
-
-    if (!element) {
-        return;
-    }
-
-    element.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-    });
+    document
+        .getElementById(
+            "timetable-result"
+        )
+        .scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
 }
 
 
-/* =========================================================
+/* =====================================================
    외부 링크
-========================================================= */
+===================================================== */
 
 function openSchedule() {
 
@@ -1323,9 +1611,9 @@ function openFamilyLetter() {
 }
 
 
-/* =========================================================
-   학년/반 변경
-========================================================= */
+/* =====================================================
+   변경 이벤트
+===================================================== */
 
 document
     .getElementById("grade-select")
@@ -1343,9 +1631,9 @@ document
     );
 
 
-/* =========================================================
-   앱 시작
-========================================================= */
+/* =====================================================
+   시작
+===================================================== */
 
 window.addEventListener(
     "DOMContentLoaded",
