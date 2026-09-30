@@ -1,2263 +1,1757 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>관인고등학교 통합앱</title>
+<title>관인고등학교 통합앱</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+* {
+    box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, "Noto Sans KR", sans-serif;
-      background: #f3f5f9;
-      color: #222;
-    }
+body {
+    margin: 0;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans KR",
+        sans-serif;
+    background: #f4f6f8;
+    color: #222;
+    padding-bottom: 80px;
+}
 
-    header {
-      background: linear-gradient(135deg, #4f8cff, #6aa8ff);
-      color: white;
-      padding: 24px 18px;
-      text-align: center;
-      font-size: 23px;
-      font-weight: bold;
-      border-bottom-left-radius: 24px;
-      border-bottom-right-radius: 24px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.12);
-    }
+header {
+    background: #2563eb;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+}
 
-    .container {
-      max-width: 950px;
-      margin: auto;
-      padding: 16px;
-      padding-bottom: 100px;
-    }
+.container {
+    padding: 16px;
+    max-width: 900px;
+    margin: auto;
+}
 
-    .section {
-      display: none;
-    }
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 16px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
 
-    .active-section {
-      display: block;
-    }
+.card h2 {
+    margin-top: 0;
+    font-size: 19px;
+}
 
-    .card {
-      background: white;
-      border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 18px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.07);
-    }
+.info {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+}
 
-    .title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 12px 15px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+}
 
-    .subtitle {
-      font-size: 14px;
-      color: #777;
-      margin-bottom: 15px;
-      line-height: 1.5;
-    }
+.primary-btn {
+    background: #2563eb;
+    color: white;
+}
 
-    button,
-    select {
-      width: 100%;
-      padding: 13px;
-      margin-top: 8px;
-      border: none;
-      border-radius: 12px;
-      font-size: 16px;
-    }
+.secondary-btn {
+    background: #e5e7eb;
+    color: #222;
+}
 
-    select {
-      background: #f1f3f7;
-    }
+select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: white;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
 
-    button {
-      background: #4f8cff;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
+.row {
+    display: flex;
+    gap: 10px;
+}
 
-    button:hover {
-      opacity: 0.9;
-    }
+.row > * {
+    flex: 1;
+}
 
-    .meal-item,
-    .notice-item {
-      background: #f7f9fc;
-      border-radius: 12px;
-      padding: 13px;
-      margin-top: 10px;
-      line-height: 1.6;
-    }
+.meal {
+    white-space: pre-line;
+    line-height: 1.8;
+}
 
-    .notice-item {
-      cursor: pointer;
-    }
+.link-box {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
-    .notice-item:hover {
-      background: #edf3ff;
-    }
+.link-box a {
+    text-decoration: none;
+    background: #f1f5f9;
+    padding: 14px;
+    border-radius: 10px;
+    color: #1d4ed8;
+    font-weight: 600;
+}
 
-    .small {
-      color: #777;
-      font-size: 13px;
-      margin-top: 5px;
-    }
+.grade3-box {
+    display: none;
+    background: #eff6ff;
+    padding: 14px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+.grade3-box.active {
+    display: block;
+}
 
-    /* =========================
-       주간 시간표
-    ========================== */
+.track-buttons {
+    display: flex;
+    gap: 10px;
+}
 
-    .week-info {
-      background: #f7f9fc;
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 14px;
-      text-align: center;
-    }
+.track-buttons button {
+    flex: 1;
+}
 
-    .week-title {
-      font-weight: bold;
-      font-size: 17px;
-    }
+.track-buttons button.active {
+    background: #2563eb;
+    color: white;
+}
 
-    .timetable-wrapper {
-      width: 100%;
-      overflow-x: auto;
-      margin-top: 15px;
-      border-radius: 12px;
-    }
+.status {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+}
 
-    .timetable {
-      width: 100%;
-      min-width: 650px;
-      border-collapse: collapse;
-      background: white;
-    }
+.week-table-wrap {
+    overflow-x: auto;
+    width: 100%;
+}
 
-    .timetable th,
-    .timetable td {
-      border: 1px solid #dfe3e8;
-      padding: 11px 6px;
-      text-align: center;
-      font-size: 14px;
-      vertical-align: middle;
-    }
+.week-table {
+    width: 100%;
+    min-width: 650px;
+    border-collapse: collapse;
+    margin-top: 12px;
+}
 
-    .timetable th {
-      background: #edf3ff;
-      font-weight: bold;
-    }
+.week-table th,
+.week-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+}
 
-    .timetable .period {
-      background: #f7f9fc;
-      font-weight: bold;
-      white-space: nowrap;
-    }
+.week-table th {
+    background: #eff6ff;
+    font-weight: 700;
+}
 
-    .today-column {
-      background: #fff7d6 !important;
-    }
+.period {
+    width: 60px;
+    background: #f8fafc;
+    font-weight: bold;
+}
 
-    .subject {
-      font-weight: 500;
-      line-height: 1.4;
-    }
+.subject {
+    font-weight: 600;
+    line-height: 1.4;
+}
 
-    .empty-subject {
-      color: #aaa;
-    }
+.teacher {
+    font-size: 12px;
+    color: #777;
+    margin-top: 3px;
+}
 
-    /* =========================
-       날짜 상태
-    ========================== */
+.day-status {
+    margin-top: 8px;
+    font-size: 13px;
+}
 
-    .day-status {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 7px;
-      margin-top: 14px;
-    }
+.day-status.success {
+    color: #16a34a;
+}
 
-    .day-status-item {
-      padding: 9px 5px;
-      border-radius: 10px;
-      text-align: center;
-      font-size: 12px;
-      background: #f1f3f7;
-    }
+.day-status.empty {
+    color: #ca8a04;
+}
 
-    .day-status-item.success {
-      background: #eaf7ee;
-      color: #247a3c;
-    }
+.day-status.error {
+    color: #dc2626;
+}
 
-    .day-status-item.empty {
-      background: #fff5e5;
-      color: #9a6400;
-    }
+.loading {
+    color: #2563eb;
+    font-weight: 600;
+}
 
-    .day-status-item.error {
-      background: #fdecec;
-      color: #b32929;
-    }
+.error {
+    color: #dc2626;
+    font-weight: 600;
+}
 
-    /* =========================
-       오류 / 로딩
-    ========================== */
+.empty {
+    color: #777;
+}
 
-    .loading {
-      text-align: center;
-      color: #777;
-      padding: 15px;
-    }
+.notice-item {
+    padding: 13px 0;
+    border-bottom: 1px solid #eee;
+}
 
-    .error {
-      color: #c62828;
-      background: #fff0f0;
-      border-radius: 10px;
-      padding: 12px;
-      margin-top: 10px;
-      line-height: 1.5;
-    }
+.notice-item:last-child {
+    border-bottom: none;
+}
 
-    .warning {
-      color: #8a6100;
-      background: #fff7df;
-      border-radius: 10px;
-      padding: 12px;
-      margin-top: 10px;
-      line-height: 1.5;
-    }
+.bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 68px;
+    background: white;
+    border-top: 1px solid #ddd;
+    display: flex;
+    z-index: 1000;
+}
 
-    .success {
-      color: #247a3c;
-      background: #eaf7ee;
-      border-radius: 10px;
-      padding: 12px;
-      margin-top: 10px;
-    }
+.bottom-nav button {
+    flex: 1;
+    border-radius: 0;
+    background: white;
+    color: #666;
+    font-size: 13px;
+}
 
-    /* =========================
-       3학년 문과 / 이과
-    ========================== */
+.bottom-nav button.active {
+    color: #2563eb;
+    font-weight: bold;
+}
 
-    .track-box {
-      background: #f7f9fc;
-      padding: 12px;
-      border-radius: 12px;
-      margin-top: 10px;
-    }
+.section {
+    display: none;
+}
 
-    .track-description {
-      font-size: 13px;
-      color: #777;
-      margin-top: 7px;
-      line-height: 1.5;
-    }
+.section.active {
+    display: block;
+}
 
-    /* =========================
-       홈
-    ========================== */
+.small {
+    font-size: 12px;
+    color: #888;
+}
 
-    .home-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .quick-button {
-      min-height: 90px;
-      background: #f7f9fc;
-      color: #222;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .quick-button:hover {
-      background: #edf3ff;
-    }
-
-    .quick-icon {
-      font-size: 28px;
-      margin-bottom: 6px;
-    }
-
-    /* =========================
-       하단 메뉴
-    ========================== */
-
-    .bottom-nav {
-      position: fixed;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 74px;
-      background: white;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      border-top: 1px solid #ddd;
-      box-shadow: 0 -3px 12px rgba(0,0,0,0.08);
-      z-index: 100;
-    }
-
-    .nav-btn {
-      width: auto;
-      margin: 0;
-      padding: 6px 10px;
-      background: none;
-      color: #777;
-      font-size: 12px;
-      font-weight: normal;
-    }
-
-    .nav-btn.active {
-      color: #4f8cff;
-      font-weight: bold;
-    }
-
-    @media (max-width: 600px) {
-
-      header {
-        font-size: 20px;
-      }
-
-      .container {
-        padding: 12px;
-        padding-bottom: 95px;
-      }
-
-      .card {
-        padding: 16px;
-      }
-
-      .day-status-item {
-        font-size: 11px;
-      }
-
-    }
-  </style>
+.reload-btn {
+    margin-top: 10px;
+    width: 100%;
+}
+</style>
 </head>
-
 
 <body>
 
 <header>
-  🏫 관인고등학교 통합앱
+    🏫 관인고등학교 통합앱
 </header>
 
-
-<div class="container">
-
-
-  <!-- =====================================
-       홈
-  ====================================== -->
-
-  <section id="homeSection" class="section active-section">
-
-    <div class="card">
-
-      <div class="title">
-        👋 관인고등학교
-      </div>
-
-      <div class="subtitle">
-        급식, 시간표, 공지사항, 가정통신문을 한곳에서 확인하세요.
-      </div>
-
-      <div class="home-grid">
-
-        <button
-          class="quick-button"
-          onclick="showSection('mealSection')">
-
-          <span class="quick-icon">🍱</span>
-          오늘 급식
-
-        </button>
-
-
-        <button
-          class="quick-button"
-          onclick="showSection('timetableSection')">
-
-          <span class="quick-icon">📅</span>
-          주간 시간표
-
-        </button>
-
-
-        <button
-          class="quick-button"
-          onclick="showSection('noticeSection')">
-
-          <span class="quick-icon">📢</span>
-          공지사항
-
-        </button>
-
-
-        <button
-          class="quick-button"
-          onclick="showSection('paperSection')">
-
-          <span class="quick-icon">📄</span>
-          가정통신문
-
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <div class="card">
-
-      <div class="title">
-        🍱 오늘 급식
-      </div>
-
-      <div id="homeMealContent">
-        불러오는 중...
-      </div>
-
-    </div>
-
-  </section>
-
-
-
-  <!-- =====================================
-       급식
-  ====================================== -->
-
-  <section id="mealSection" class="section">
-
-    <div class="card">
-
-      <div class="title">
-        🍱 오늘 급식
-      </div>
-
-      <div class="subtitle">
-        관인고등학교 오늘의 급식입니다.
-      </div>
-
-      <div id="mealContent">
-        불러오는 중...
-      </div>
-
-      <button onclick="loadMeal()">
-        🔄 급식 새로고침
-      </button>
-
-    </div>
-
-  </section>
-
-
-
-  <!-- =====================================
-       시간표
-  ====================================== -->
-
-  <section id="timetableSection" class="section">
-
-    <div class="card">
-
-      <div class="title">
-        📅 이번 주 시간표
-      </div>
-
-      <div class="subtitle">
-        학년과 반을 선택하면 월요일부터 금요일까지의 시간표를 가져옵니다.
-      </div>
-
-
-      <!-- 학년 -->
-
-      <select
-        id="gradeSelect"
-        onchange="toggleTrackSelect()">
-
-        <option value="1">
-          1학년
-        </option>
-
-        <option value="2">
-          2학년
-        </option>
-
-        <option value="3">
-          3학년
-        </option>
-
-      </select>
-
-
-      <!-- 반 -->
-
-      <select id="classSelect">
-
-        <option value="1">1반</option>
-        <option value="2">2반</option>
-        <option value="3">3반</option>
-        <option value="4">4반</option>
-        <option value="5">5반</option>
-        <option value="6">6반</option>
-        <option value="7">7반</option>
-        <option value="8">8반</option>
-        <option value="9">9반</option>
-        <option value="10">10반</option>
-
-      </select>
-
-
-      <!-- 3학년 선택 -->
-
-      <div
-        id="trackBox"
-        class="track-box"
-        style="display:none;">
-
-        <strong>
-          🎓 3학년 선택
-        </strong>
-
-        <select id="trackSelect">
-
-          <option value="문과">
-            문과
-          </option>
-
-          <option value="이과">
-            이과
-          </option>
-
-        </select>
-
-        <div class="track-description">
-          3학년의 경우 선택한 계열에 맞게 표시합니다.
+<main class="container">
+
+    <!-- =========================
+         홈
+    ========================== -->
+    <section id="home" class="section active">
+
+        <!-- 급식 -->
+        <div class="card">
+            <h2>🍚 오늘의 급식</h2>
+
+            <div id="mealDate" class="small"></div>
+
+            <div id="meal" class="meal loading">
+                급식 정보를 불러오는 중...
+            </div>
+
+            <button
+                class="secondary-btn reload-btn"
+                onclick="loadMeal()">
+                🔄 급식 새로고침
+            </button>
         </div>
 
-      </div>
+
+        <!-- 시간표 설정 -->
+        <div class="card">
+
+            <h2>📚 시간표</h2>
+
+            <div class="info">
+                학년과 반을 선택하면 이번 주 월요일부터 금요일까지의
+                시간표를 조회합니다.
+            </div>
+
+            <br>
+
+            <div class="row">
+
+                <div>
+                    <label>학년</label>
+
+                    <select id="gradeSelect" onchange="gradeChanged()">
+                        <option value="1">1학년</option>
+                        <option value="2">2학년</option>
+                        <option value="3">3학년</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>반</label>
+
+                    <select id="classSelect">
+                        <option value="1">1반</option>
+                        <option value="2">2반</option>
+                        <option value="3">3반</option>
+                        <option value="4">4반</option>
+                        <option value="5">5반</option>
+                        <option value="6">6반</option>
+                        <option value="7">7반</option>
+                        <option value="8">8반</option>
+                        <option value="9">9반</option>
+                        <option value="10">10반</option>
+                    </select>
+                </div>
+
+            </div>
 
 
-      <button onclick="loadWeeklyTimetable()">
-        📅 시간표 불러오기
-      </button>
+            <!-- 3학년 문과/이과 -->
+            <div
+                id="grade3Box"
+                class="grade3-box">
 
-    </div>
+                <strong>3학년 계열 선택</strong>
 
+                <p class="small">
+                    시간표에 계열별 과목이 구분되어 있는 경우 선택합니다.
+                </p>
 
+                <div class="track-buttons">
 
-    <!-- 주간 정보 -->
+                    <button
+                        id="humanitiesBtn"
+                        class="secondary-btn active"
+                        onclick="selectTrack('문과')">
+                        📖 문과
+                    </button>
 
-    <div class="card">
+                    <button
+                        id="scienceBtn"
+                        class="secondary-btn"
+                        onclick="selectTrack('이과')">
+                        🔬 이과
+                    </button>
 
-      <div id="timetableStatus">
+                </div>
 
-        학년과 반을 선택한 뒤
-        시간표 불러오기를 눌러주세요.
-
-      </div>
-
-
-      <div
-        id="dayStatus"
-        class="day-status">
-      </div>
-
-
-      <div class="timetable-wrapper">
-
-        <table class="timetable">
-
-          <thead>
-
-            <tr>
-
-              <th>
-                교시
-              </th>
-
-              <th id="monHeader">
-                월
-              </th>
-
-              <th id="tueHeader">
-                화
-              </th>
-
-              <th id="wedHeader">
-                수
-              </th>
-
-              <th id="thuHeader">
-                목
-              </th>
-
-              <th id="friHeader">
-                금
-              </th>
-
-            </tr>
-
-          </thead>
+            </div>
 
 
-          <tbody id="timetableBody">
-          </tbody>
-
-        </table>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-
-  <!-- =====================================
-       공지사항
-  ====================================== -->
-
-  <section id="noticeSection" class="section">
-
-    <div class="card">
-
-      <div class="title">
-        📢 공지사항
-      </div>
-
-      <div class="subtitle">
-        관인고등학교 학교 홈페이지의 공지사항입니다.
-      </div>
-
-
-      <a
-        href="https://www.goepc.kr/kwanin-h/main.do"
-        target="_blank"
-        rel="noopener">
-
-        <div class="notice-item">
-
-          📢 학교 홈페이지
-
-          <div class="small">
-            관인고등학교 홈페이지에서 공지사항 확인
-          </div>
+            <button
+                class="primary-btn reload-btn"
+                onclick="loadWeeklyTimetable()">
+                🔎 이번 주 시간표 조회
+            </button>
 
         </div>
 
-      </a>
 
+        <!-- 주간 시간표 -->
+        <div class="card">
 
-      <a
-        href="https://www.goepc.kr/kwanin-h/ps/schdul/selectSchdulMainList.do?mi=4297"
-        target="_blank"
-        rel="noopener">
+            <h2>🗓️ 이번 주 시간표</h2>
 
-        <div class="notice-item">
+            <div id="timetableInfo" class="info">
+                학년과 반을 선택해주세요.
+            </div>
 
-          📅 학교 일정
+            <div id="weeklyStatus"></div>
 
-          <div class="small">
-            관인고등학교 학사일정 확인
-          </div>
+            <div class="week-table-wrap">
 
-        </div>
+                <table
+                    id="weekTable"
+                    class="week-table"
+                    style="display:none;">
 
-      </a>
+                    <thead>
+                        <tr>
+                            <th>교시</th>
+                            <th>월</th>
+                            <th>화</th>
+                            <th>수</th>
+                            <th>목</th>
+                            <th>금</th>
+                        </tr>
+                    </thead>
 
-    </div>
+                    <tbody id="weekTableBody"></tbody>
 
-  </section>
+                </table>
 
-
-
-  <!-- =====================================
-       가정통신문
-  ====================================== -->
-
-  <section id="paperSection" class="section">
-
-    <div class="card">
-
-      <div class="title">
-        📄 가정통신문
-      </div>
-
-      <div class="subtitle">
-        관인고등학교 가정통신문을 확인하세요.
-      </div>
-
-
-      <a
-        href="https://www.goepc.kr/kwanin-h/na/ntt/selectNttList.do?mi=4244&bbsId=3241"
-        target="_blank"
-        rel="noopener">
-
-        <div class="notice-item">
-
-          📄 가정통신문
-
-          <div class="small">
-            학교 홈페이지의 가정통신문 게시판 열기
-          </div>
+            </div>
 
         </div>
 
-      </a>
 
-    </div>
+        <!-- 학교 안내 -->
+        <div class="card">
 
-  </section>
+            <h2>📢 학교 안내</h2>
 
-</div>
+            <div class="link-box">
+
+                <a
+                    href="https://www.goepc.kr/kwanin-h/main.do"
+                    target="_blank">
+                    🏫 관인고등학교 홈페이지
+                </a>
+
+                <a
+                    href="https://www.goepc.kr/kwanin-h/ps/schdul/selectSchdulMainList.do?mi=4297"
+                    target="_blank">
+                    📅 학교 일정
+                </a>
+
+            </div>
+
+        </div>
 
 
+        <!-- 가정통신문 -->
+        <div class="card">
 
-<!-- =====================================
-     하단 메뉴
-====================================== -->
+            <h2>📄 가정통신문</h2>
+
+            <p class="info">
+                최신 가정통신문은 학교 홈페이지에서 확인할 수 있습니다.
+            </p>
+
+            <div class="link-box">
+
+                <a
+                    href="https://www.goepc.kr/kwanin-h/na/ntt/selectNttList.do?mi=4244&bbsId=3241"
+                    target="_blank">
+                    📬 가정통신문 바로가기
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         공지사항
+    ========================== -->
+    <section id="notice" class="section">
+
+        <div class="card">
+
+            <h2>📢 공지사항</h2>
+
+            <div class="notice-item">
+                학교 홈페이지에서 최신 공지사항을 확인할 수 있습니다.
+            </div>
+
+            <div class="notice-item">
+                <a
+                    href="https://www.goepc.kr/kwanin-h/main.do"
+                    target="_blank">
+                    학교 홈페이지 바로가기 →
+                </a>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         가정통신문
+    ========================== -->
+    <section id="letter" class="section">
+
+        <div class="card">
+
+            <h2>📄 가정통신문</h2>
+
+            <p class="info">
+                관인고등학교 가정통신문을 확인합니다.
+            </p>
+
+            <a
+                href="https://www.goepc.kr/kwanin-h/na/ntt/selectNttList.do?mi=4244&bbsId=3241"
+                target="_blank">
+
+                <button class="primary-btn">
+                    가정통신문 확인
+                </button>
+
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     하단 네비게이션
+========================== -->
 
 <nav class="bottom-nav">
 
-  <button
-    class="nav-btn active"
-    onclick="showSection('homeSection', this)">
+    <button
+        id="navHome"
+        class="active"
+        onclick="showSection('home', this)">
+        🏠<br>
+        홈
+    </button>
 
-    🏠<br>
-    홈
+    <button
+        id="navNotice"
+        onclick="showSection('notice', this)">
+        📢<br>
+        공지
+    </button>
 
-  </button>
-
-
-  <button
-    class="nav-btn"
-    onclick="showSection('mealSection', this)">
-
-    🍱<br>
-    급식
-
-  </button>
-
-
-  <button
-    class="nav-btn"
-    onclick="showSection('timetableSection', this)">
-
-    📅<br>
-    시간표
-
-  </button>
-
-
-  <button
-    class="nav-btn"
-    onclick="showSection('noticeSection', this)">
-
-    📢<br>
-    공지
-
-  </button>
-
-
-  <button
-    class="nav-btn"
-    onclick="showSection('paperSection', this)">
-
-    📄<br>
-    가정통신문
-
-  </button>
+    <button
+        id="navLetter"
+        onclick="showSection('letter', this)">
+        📄<br>
+        가정통신문
+    </button>
 
 </nav>
 
 
-
 <script>
 
-/* ==================================================
+/* =====================================================
    기본 설정
-================================================== */
-
+===================================================== */
 
 /*
-  ⚠️ 여기에 네 NEIS API KEY 입력
-*/
-
+ * ⚠️ 여기에 네가 발급받은 NEIS API KEY를 입력하세요.
+ */
 const NEIS_KEY = "7578d97feec449a28b001c18538d22ed";
 
 
-/*
-  경기도교육청
-*/
-
 const OFFICE_CODE = "J10";
-
-
-/*
-  관인고등학교
-*/
 
 const SCHOOL_CODE = "7530049";
 
+const MEAL_SERVER =
+    "https://meal-server-1.onrender.com/meal";
 
 
-/* ==================================================
-   화면 전환
-================================================== */
-
-function showSection(sectionId, clickedButton = null) {
-
-  const sections =
-    document.querySelectorAll(".section");
+let selectedTrack = "문과";
 
 
-  sections.forEach(section => {
+/* =====================================================
+   오늘 날짜
+===================================================== */
 
-    section.classList.remove(
-      "active-section"
-    );
+function getTodayString() {
 
-  });
+    const now = new Date();
 
+    const year =
+        now.getFullYear();
 
-  const target =
-    document.getElementById(sectionId);
+    const month =
+        String(now.getMonth() + 1)
+        .padStart(2, "0");
 
+    const day =
+        String(now.getDate())
+        .padStart(2, "0");
 
-  if (target) {
-
-    target.classList.add(
-      "active-section"
-    );
-
-  }
-
-
-  /*
-    하단 메뉴 활성화
-  */
-
-  const navButtons =
-    document.querySelectorAll(".nav-btn");
-
-
-  navButtons.forEach(button => {
-
-    button.classList.remove(
-      "active"
-    );
-
-  });
-
-
-  if (clickedButton) {
-
-    clickedButton.classList.add(
-      "active"
-    );
-
-  }
-
+    return `${year}${month}${day}`;
 }
 
 
-
-/* ==================================================
-   3학년 문과 / 이과 표시
-================================================== */
-
-function toggleTrackSelect() {
-
-  const grade =
-    document.getElementById(
-      "gradeSelect"
-    ).value;
-
-
-  const trackBox =
-    document.getElementById(
-      "trackBox"
-    );
-
-
-  if (grade === "3") {
-
-    trackBox.style.display =
-      "block";
-
-  } else {
-
-    trackBox.style.display =
-      "none";
-
-  }
-
-}
-
-
-
-/* ==================================================
+/* =====================================================
    날짜 YYYYMMDD
-================================================== */
+===================================================== */
 
 function formatDate(date) {
 
-  const year =
-    date.getFullYear();
+    const year =
+        date.getFullYear();
 
+    const month =
+        String(date.getMonth() + 1)
+        .padStart(2, "0");
 
-  const month =
-    String(
-      date.getMonth() + 1
-    ).padStart(2, "0");
+    const day =
+        String(date.getDate())
+        .padStart(2, "0");
 
-
-  const day =
-    String(
-      date.getDate()
-    ).padStart(2, "0");
-
-
-  return `${year}${month}${day}`;
-
+    return `${year}${month}${day}`;
 }
 
 
+/* =====================================================
+   요일
+===================================================== */
 
-/* ==================================================
-   날짜 YYYY년 M월 D일
-================================================== */
+function getDayName(date) {
 
-function formatKoreanDate(date) {
+    const names = [
+        "일",
+        "월",
+        "화",
+        "수",
+        "목",
+        "금",
+        "토"
+    ];
 
-  return (
-    date.getFullYear()
-    + "년 "
-    + (date.getMonth() + 1)
-    + "월 "
-    + date.getDate()
-    + "일"
-  );
-
+    return names[date.getDay()];
 }
 
 
-
-/* ==================================================
+/* =====================================================
    이번 주 월요일
-================================================== */
+===================================================== */
 
-function getMonday(date) {
+function getMonday(date = new Date()) {
 
-  const result =
-    new Date(date);
+    const result =
+        new Date(date);
 
+    const day =
+        result.getDay();
 
-  result.setHours(
-    0,
-    0,
-    0,
-    0
-  );
+    const diff =
+        day === 0
+            ? -6
+            : 1 - day;
 
+    result.setDate(
+        result.getDate() + diff
+    );
 
-  const day =
-    result.getDay();
+    result.setHours(
+        0, 0, 0, 0
+    );
 
-
-  const difference =
-    day === 0
-      ? -6
-      : 1 - day;
-
-
-  result.setDate(
-    result.getDate() + difference
-  );
-
-
-  return result;
-
+    return result;
 }
 
 
+/* =====================================================
+   학년 변경
+===================================================== */
 
-/* ==================================================
-   급식
-================================================== */
+function gradeChanged() {
 
-async function loadMeal() {
+    const grade =
+        document.getElementById(
+            "gradeSelect"
+        ).value;
 
-  const elements = [
+    const grade3Box =
+        document.getElementById(
+            "grade3Box"
+        );
 
-    document.getElementById(
-      "mealContent"
-    ),
+    if (grade === "3") {
 
-    document.getElementById(
-      "homeMealContent"
-    )
+        grade3Box.classList.add(
+            "active"
+        );
 
-  ];
+    } else {
 
-
-  elements.forEach(element => {
-
-    if (element) {
-
-      element.innerHTML =
-        '<div class="loading">🍱 급식 불러오는 중...</div>';
-
+        grade3Box.classList.remove(
+            "active"
+        );
     }
-
-  });
-
-
-  try {
-
-    const response =
-      await fetch(
-        "https://meal-server-1.onrender.com/meal"
-      );
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        "급식 서버 응답 오류"
-      );
-
-    }
-
-
-    const data =
-      await response.json();
-
-
-    /*
-      NEIS 급식 응답 확인
-    */
-
-    if (
-      !data.mealServiceDietInfo ||
-      !Array.isArray(
-        data.mealServiceDietInfo
-      )
-    ) {
-
-      throw new Error(
-        "급식 데이터 구조 오류"
-      );
-
-    }
-
-
-    const rows =
-      data
-        .mealServiceDietInfo
-        .find(
-          item =>
-            Array.isArray(item.row)
-        )
-        ?.row;
-
-
-    if (
-      !rows ||
-      rows.length === 0
-    ) {
-
-      throw new Error(
-        "오늘 급식 데이터가 없습니다."
-      );
-
-    }
-
-
-    let html = "";
-
-
-    rows.forEach(row => {
-
-      const mealName =
-        row.MMEAL_SC_NM
-        || "급식";
-
-
-      const date =
-        row.MLSV_YMD
-        || "";
-
-
-      const rawMenu =
-        row.DDISH_NM
-        || "메뉴 없음";
-
-
-      const menu =
-        rawMenu
-          .split("<br/>")
-          .map(
-            item =>
-              item
-                .replace(
-                  /<[^>]*>/g,
-                  ""
-                )
-                .trim()
-          )
-          .filter(Boolean);
-
-
-      html += `
-
-        <div class="meal-item">
-
-          <strong>
-            ${mealName}
-          </strong>
-
-          <div class="small">
-            ${date}
-          </div>
-
-          <div style="margin-top:8px;">
-
-            ${
-              menu.length > 0
-                ? menu.join("<br>")
-                : "메뉴 없음"
-            }
-
-          </div>
-
-        </div>
-
-      `;
-
-    });
-
-
-    elements.forEach(element => {
-
-      if (element) {
-
-        element.innerHTML =
-          html;
-
-      }
-
-    });
-
-
-  } catch (error) {
-
-    console.error(
-      "급식 오류:",
-      error
-    );
-
-
-    elements.forEach(element => {
-
-      if (element) {
-
-        element.innerHTML = `
-
-          <div class="error">
-
-            급식 정보를 불러오지 못했습니다.
-
-            <div class="small">
-              ${error.message}
-            </div>
-
-          </div>
-
-        `;
-
-      }
-
-    });
-
-  }
-
 }
 
 
+/* =====================================================
+   문과 / 이과 선택
+===================================================== */
 
-/* ==================================================
-   NEIS 시간표 API URL 생성
-================================================== */
+function selectTrack(track) {
 
-function makeTimetableUrl(
-  grade,
-  classNum,
-  date
-) {
+    selectedTrack = track;
 
-  return (
+    const humanitiesBtn =
+        document.getElementById(
+            "humanitiesBtn"
+        );
 
-    "https://open.neis.go.kr/hub/hisTimetable"
-    + "?KEY="
-    + encodeURIComponent(NEIS_KEY)
-    + "&Type=json"
-    + "&ATPT_OFCDC_SC_CODE="
-    + encodeURIComponent(OFFICE_CODE)
-    + "&SD_SCHUL_CODE="
-    + encodeURIComponent(SCHOOL_CODE)
-    + "&GRADE="
-    + encodeURIComponent(grade)
-    + "&CLASS_NM="
-    + encodeURIComponent(classNum)
-    + "&ALL_TI_YMD="
-    + encodeURIComponent(date)
-
-  );
-
-}
-
-
-
-/* ==================================================
-   NEIS 시간표 하루 요청
-================================================== */
-
-async function fetchDayTimetable(
-  grade,
-  classNum,
-  date
-) {
-
-  const url =
-    makeTimetableUrl(
-      grade,
-      classNum,
-      date
-    );
-
-
-  console.log(
-    "================================"
-  );
-
-  console.log(
-    "NEIS 시간표 요청"
-  );
-
-  console.log(
-    "학년:",
-    grade
-  );
-
-  console.log(
-    "반:",
-    classNum
-  );
-
-  console.log(
-    "날짜:",
-    date
-  );
-
-
-  const response =
-    await fetch(url);
-
-
-  /*
-    HTTP 오류
-  */
-
-  if (!response.ok) {
-
-    throw new Error(
-      `HTTP 오류 ${response.status}`
-    );
-
-  }
-
-
-  const data =
-    await response.json();
-
-
-  console.log(
-    "NEIS 원본 응답:",
-    date,
-    data
-  );
-
-
-  /*
-    ==========================================
-    NEIS 에러 응답 처리
-    ==========================================
-
-    예:
-
-    {
-      RESULT: {
-        CODE: "INFO-300",
-        MESSAGE: "데이터 없음"
-      }
-    }
-
-  */
-
-
-  if (data.RESULT) {
-
-    const code =
-      data.RESULT.CODE
-      || "";
-
-
-    const message =
-      data.RESULT.MESSAGE
-      || "알 수 없는 오류";
-
-
-    console.warn(
-      "NEIS RESULT:",
-      code,
-      message
-    );
-
-
-    return {
-
-      success: false,
-
-      empty: true,
-
-      code: code,
-
-      message: message,
-
-      rows: []
-
-    };
-
-  }
-
-
-
-  /*
-    ==========================================
-    정상적인 hisTimetable 구조 확인
-    ==========================================
-  */
-
-
-  if (
-    !data.hisTimetable ||
-    !Array.isArray(
-      data.hisTimetable
-    )
-  ) {
-
-    console.warn(
-      "hisTimetable 배열 없음:",
-      date
-    );
-
-
-    return {
-
-      success: false,
-
-      empty: true,
-
-      code: "NO_HIS_TIMETABLE",
-
-      message:
-        "hisTimetable 데이터가 없습니다.",
-
-      rows: []
-
-    };
-
-  }
-
-
-
-  /*
-    NEIS에서는 보통
-
-    hisTimetable[0] = head
-    hisTimetable[1] = row
-
-    형태지만,
-
-    배열 위치가 달라질 경우를
-    대비해서 row를 가진 객체를
-    직접 찾는다.
-  */
-
-
-  let rowContainer =
-    data.hisTimetable.find(
-      item =>
-        item &&
-        Array.isArray(item.row)
-    );
-
-
-  /*
-    row를 찾지 못함
-  */
-
-  if (!rowContainer) {
-
-    console.warn(
-      "row 데이터 없음:",
-      date,
-      data.hisTimetable
-    );
-
-
-    return {
-
-      success: false,
-
-      empty: true,
-
-      code: "NO_ROW",
-
-      message:
-        "해당 날짜의 시간표 데이터가 없습니다.",
-
-      rows: []
-
-    };
-
-  }
-
-
-  const rows =
-    rowContainer.row;
-
-
-  /*
-    row가 비어 있음
-  */
-
-  if (
-    !Array.isArray(rows) ||
-    rows.length === 0
-  ) {
-
-    return {
-
-      success: false,
-
-      empty: true,
-
-      code: "EMPTY_ROW",
-
-      message:
-        "해당 날짜에 시간표가 없습니다.",
-
-      rows: []
-
-    };
-
-  }
-
-
-  /*
-    정상
-  */
-
-  return {
-
-    success: true,
-
-    empty: false,
-
-    code: "OK",
-
-    message: "정상",
-
-    rows: rows
-
-  };
-
-}
-
-
-
-/* ==================================================
-   과목명 정리
-================================================== */
-
-function processSubject(
-  subject,
-  grade,
-  track
-) {
-
-  if (
-    subject === null ||
-    subject === undefined
-  ) {
-
-    return "-";
-
-  }
-
-
-  let result =
-    String(subject)
-      .replace(
-        /<br\s*\/?>/gi,
-        " "
-      )
-      .replace(
-        /<[^>]*>/g,
-        ""
-      )
-      .trim();
-
-
-  if (!result) {
-
-    return "-";
-
-  }
-
-
-  /*
-    3학년 문과 / 이과
-
-    실제 NEIS 데이터가
-    "A/B" 형태로 내려오는 경우에만
-    간단하게 분리한다.
-
-    일반 과목명에는 영향을 주지 않는다.
-  */
-
-  if (grade === "3") {
-
-    const parts =
-      result
-        .split("/")
-        .map(
-          item =>
-            item.trim()
-        )
-        .filter(Boolean);
-
-
-    if (
-      parts.length === 2
-    ) {
-
-      if (track === "문과") {
-
-        result =
-          parts[0];
-
-      } else {
-
-        result =
-          parts[1];
-
-      }
-
-    }
-
-  }
-
-
-  return result;
-
-}
-
-
-
-/* ==================================================
-   특정 교시 과목 찾기
-================================================== */
-
-function getSubjectForPeriod(
-  rows,
-  period,
-  grade,
-  track
-) {
-
-  /*
-    NEIS 필드가 PERIO인 경우
-  */
-
-  const found =
-    rows.find(row => {
-
-      const rowPeriod =
-        parseInt(
-          row.PERIO,
-          10
+    const scienceBtn =
+        document.getElementById(
+            "scienceBtn"
         );
 
 
-      return (
-        rowPeriod === period
-      );
+    humanitiesBtn.classList.remove(
+        "active"
+    );
 
-    });
-
-
-  if (!found) {
-
-    return "-";
-
-  }
+    scienceBtn.classList.remove(
+        "active"
+    );
 
 
-  return processSubject(
-    found.ITRT_CNTNT,
-    grade,
-    track
-  );
+    if (track === "문과") {
 
+        humanitiesBtn.classList.add(
+            "active"
+        );
+
+    } else {
+
+        scienceBtn.classList.add(
+            "active"
+        );
+    }
 }
 
 
+/* =====================================================
+   급식
+===================================================== */
 
-/* ==================================================
-   주간 시간표
-================================================== */
+async function loadMeal() {
 
-async function loadWeeklyTimetable() {
+    const mealElement =
+        document.getElementById(
+            "meal"
+        );
 
-  const grade =
-    document.getElementById(
-      "gradeSelect"
-    ).value;
-
-
-  const classNum =
-    document.getElementById(
-      "classSelect"
-    ).value;
+    const mealDate =
+        document.getElementById(
+            "mealDate"
+        );
 
 
-  const track =
-    document.getElementById(
-      "trackSelect"
-    ).value;
+    mealElement.className =
+        "meal loading";
+
+    mealElement.textContent =
+        "급식 정보를 불러오는 중...";
 
 
-  const status =
-    document.getElementById(
-      "timetableStatus"
-    );
-
-
-  const tbody =
-    document.getElementById(
-      "timetableBody"
-    );
-
-
-  const dayStatus =
-    document.getElementById(
-      "dayStatus"
-    );
-
-
-  /*
-    초기화
-  */
-
-  tbody.innerHTML = "";
-
-  dayStatus.innerHTML = "";
-
-
-  status.innerHTML =
-    '<div class="loading">📅 월~금 시간표를 불러오는 중...</div>';
-
-
-  /*
-    이번 주 월요일
-  */
-
-  const today =
-    new Date();
-
-
-  const monday =
-    getMonday(today);
-
-
-  const dayNames = [
-    "월",
-    "화",
-    "수",
-    "목",
-    "금"
-  ];
-
-
-  /*
-    5일 데이터
-  */
-
-  const weeklyData = [];
-
-
-  /*
-    ==========================================
-    월~금 각각 요청
-    ==========================================
-  */
-
-  for (
-    let day = 0;
-    day < 5;
-    day++
-  ) {
-
-    const currentDate =
-      new Date(monday);
-
-
-    currentDate.setDate(
-      monday.getDate() + day
-    );
-
-
-    const date =
-      formatDate(
-        currentDate
-      );
-
-
-    const koreanDate =
-      formatKoreanDate(
-        currentDate
-      );
+    mealDate.textContent =
+        new Date()
+            .toLocaleDateString(
+                "ko-KR",
+                {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                    weekday: "long"
+                }
+            );
 
 
     try {
 
-      const result =
-        await fetchDayTimetable(
-          grade,
-          classNum,
-          date
+        const response =
+            await fetch(
+                MEAL_SERVER,
+                {
+                    cache: "no-store"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `급식 서버 오류 ${response.status}`
+            );
+        }
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "급식 원본 데이터:",
+            data
         );
 
 
-      weeklyData.push({
+        let rows = [];
 
-        day: day,
 
-        dayName:
-          dayNames[day],
+        if (
+            data &&
+            data.mealServiceDietInfo &&
+            data.mealServiceDietInfo[1] &&
+            data.mealServiceDietInfo[1].row
+        ) {
 
-        date: date,
+            rows =
+                data.mealServiceDietInfo[1].row;
 
-        koreanDate:
-          koreanDate,
+        }
 
-        rows:
-          result.rows,
 
-        success:
-          result.success,
+        if (!rows.length) {
 
-        empty:
-          result.empty,
+            mealElement.className =
+                "meal empty";
 
-        code:
-          result.code,
+            mealElement.textContent =
+                "오늘 급식 정보가 없습니다.";
 
-        message:
-          result.message
+            return;
+        }
 
-      });
+
+        const today =
+            getTodayString();
+
+
+        const todayRows =
+            rows.filter(
+                row => {
+
+                    const date =
+                        String(
+                            row.MLSV_YMD ||
+                            row.DATE ||
+                            ""
+                        );
+
+                    return date === today;
+                }
+            );
+
+
+        const targetRows =
+            todayRows.length
+                ? todayRows
+                : rows;
+
+
+        let html = "";
+
+
+        targetRows.forEach(
+            row => {
+
+                const meal =
+                    row.DDISH_NM ||
+                    row.MENU ||
+                    row.DISH_NM ||
+                    "";
+
+
+                const cleanMeal =
+                    meal
+                        .replace(
+                            /<br\s*\/?>/gi,
+                            "\n"
+                        )
+                        .replace(
+                            /\([^)]*\)/g,
+                            ""
+                        );
+
+
+                html +=
+                    cleanMeal +
+                    "\n";
+            }
+        );
+
+
+        mealElement.className =
+            "meal";
+
+        mealElement.textContent =
+            html.trim();
 
 
     } catch (error) {
 
-      console.error(
-        `${dayNames[day]}요일 요청 실패:`,
-        error
-      );
-
-
-      weeklyData.push({
-
-        day: day,
-
-        dayName:
-          dayNames[day],
-
-        date: date,
-
-        koreanDate:
-          koreanDate,
-
-        rows: [],
-
-        success: false,
-
-        empty: false,
-
-        code: "FETCH_ERROR",
-
-        message:
-          error.message
-
-      });
-
-    }
-
-  }
-
-
-
-  /*
-    ==========================================
-    날짜별 상태 표시
-    ==========================================
-  */
-
-  weeklyData.forEach(dayData => {
-
-    const item =
-      document.createElement(
-        "div"
-      );
-
-
-    item.classList.add(
-      "day-status-item"
-    );
-
-
-    if (dayData.success) {
-
-      item.classList.add(
-        "success"
-      );
-
-      item.innerHTML = `
-        ${dayData.dayName}<br>
-        ✓ 정상
-      `;
-
-    }
-
-    else if (dayData.empty) {
-
-      item.classList.add(
-        "empty"
-      );
-
-      item.innerHTML = `
-        ${dayData.dayName}<br>
-        데이터 없음
-      `;
-
-    }
-
-    else {
-
-      item.classList.add(
-        "error"
-      );
-
-      item.innerHTML = `
-        ${dayData.dayName}<br>
-        오류
-      `;
-
-    }
-
-
-    item.title =
-      `${dayData.koreanDate}: ${dayData.message}`;
-
-
-    dayStatus.appendChild(
-      item
-    );
-
-  });
-
-
-
-  /*
-    ==========================================
-    정상 데이터가 하나라도 있는지 확인
-    ==========================================
-  */
-
-  const hasAnyData =
-    weeklyData.some(
-      dayData =>
-        dayData.success &&
-        dayData.rows.length > 0
-    );
-
-
-  if (!hasAnyData) {
-
-    status.innerHTML = `
-
-      <div class="error">
-
-        <strong>
-          이번 주 시간표 데이터를 찾지 못했습니다.
-        </strong>
-
-        <div class="small">
-
-          선택:
-          ${grade}학년 ${classNum}반
-
-          ${
-            grade === "3"
-              ? ` · ${track}`
-              : ""
-          }
-
-        </div>
-
-        <div class="small">
-
-          아래 요일별 상태를 확인해주세요.
-          브라우저의 개발자도구 Console에는
-          NEIS 원본 응답도 표시됩니다.
-
-        </div>
-
-      </div>
-
-    `;
-
-
-    /*
-      빈 표 대신 안내
-    */
-
-    tbody.innerHTML = `
-
-      <tr>
-
-        <td
-          colspan="6"
-          style="padding:25px;color:#888;"
-        >
-
-          현재 표시할 시간표 데이터가 없습니다.
-
-        </td>
-
-      </tr>
-
-    `;
-
-
-    return;
-
-  }
-
-
-
-  /*
-    ==========================================
-    최대 교시 찾기
-    ==========================================
-  */
-
-  let maxPeriod = 0;
-
-
-  weeklyData.forEach(dayData => {
-
-    dayData.rows.forEach(row => {
-
-      const period =
-        parseInt(
-          row.PERIO,
-          10
+        console.error(
+            "급식 오류:",
+            error
         );
 
 
-      if (
-        !isNaN(period) &&
-        period > maxPeriod
-      ) {
+        mealElement.className =
+            "meal error";
 
-        maxPeriod =
-          period;
-
-      }
-
-    });
-
-  });
-
-
-  /*
-    혹시 PERIO가 이상하면
-    기본 7교시까지 보여준다.
-  */
-
-  if (maxPeriod === 0) {
-
-    maxPeriod = 7;
-
-  }
-
-
-
-  /*
-    ==========================================
-    오늘 요일 강조
-    ==========================================
-  */
-
-  const todayDay =
-    today.getDay();
-
-
-  const todayIndex =
-    todayDay >= 1 &&
-    todayDay <= 5
-      ? todayDay - 1
-      : -1;
-
-
-  const headers = [
-    "monHeader",
-    "tueHeader",
-    "wedHeader",
-    "thuHeader",
-    "friHeader"
-  ];
-
-
-  headers.forEach(
-    (headerId, index) => {
-
-      const header =
-        document.getElementById(
-          headerId
-        );
-
-
-      header.classList.remove(
-        "today-column"
-      );
-
-
-      if (
-        index === todayIndex
-      ) {
-
-        header.classList.add(
-          "today-column"
-        );
-
-      }
-
+        mealElement.textContent =
+            "급식 정보를 불러오지 못했습니다.";
     }
-  );
-
-
-
-  /*
-    ==========================================
-    표 생성
-    ==========================================
-  */
-
-  let html = "";
-
-
-  for (
-    let period = 1;
-    period <= maxPeriod;
-    period++
-  ) {
-
-    html += `
-      <tr>
-
-        <td class="period">
-          ${period}교시
-        </td>
-    `;
-
-
-    weeklyData.forEach(
-      (dayData, dayIndex) => {
-
-        const subject =
-          getSubjectForPeriod(
-            dayData.rows,
-            period,
-            grade,
-            track
-          );
-
-
-        const isToday =
-          dayIndex === todayIndex;
-
-
-        const className =
-          isToday
-            ? "today-column"
-            : "";
-
-
-        if (
-          subject === "-"
-        ) {
-
-          html += `
-
-            <td class="${className}">
-
-              <span class="empty-subject">
-                -
-              </span>
-
-            </td>
-
-          `;
-
-        } else {
-
-          html += `
-
-            <td class="${className}">
-
-              <span class="subject">
-                ${subject}
-              </span>
-
-            </td>
-
-          `;
-
-        }
-
-      }
-    );
-
-
-    html += `
-      </tr>
-    `;
-
-  }
-
-
-  tbody.innerHTML =
-    html;
-
-
-
-  /*
-    ==========================================
-    상단 상태
-    ==========================================
-  */
-
-  const successfulDays =
-    weeklyData.filter(
-      dayData =>
-        dayData.success
-    ).length;
-
-
-  status.innerHTML = `
-
-    <div class="success">
-
-      <strong>
-        ${grade}학년 ${classNum}반
-      </strong>
-
-      ${
-        grade === "3"
-          ? ` · ${track}`
-          : ""
-      }
-
-      <div class="small">
-
-        ${formatKoreanDate(monday)}
-        ~
-        ${formatKoreanDate(
-          new Date(
-            monday.getFullYear(),
-            monday.getMonth(),
-            monday.getDate() + 4
-          )
-        )}
-
-        ·
-
-        ${successfulDays}/5일 데이터 확인
-
-      </div>
-
-    </div>
-
-  `;
-
 }
 
 
+/* =====================================================
+   NEIS URL 만들기
+===================================================== */
 
-/* ==================================================
-   페이지 시작
-================================================== */
+function makeTimetableUrl(dateString) {
 
-window.addEventListener(
-  "load",
-  () => {
+    const params =
+        new URLSearchParams({
 
-    toggleTrackSelect();
+            KEY: NEIS_KEY,
 
-    loadMeal();
+            Type: "json",
 
-  }
+            pIndex: "1",
+
+            pSize: "100",
+
+            ATPT_OFCDC_SC_CODE:
+                OFFICE_CODE,
+
+            SD_SCHUL_CODE:
+                SCHOOL_CODE,
+
+            ALL_TI_YMD:
+                dateString,
+
+            GRADE:
+                document.getElementById(
+                    "gradeSelect"
+                ).value,
+
+            CLASS_NM:
+                document.getElementById(
+                    "classSelect"
+                ).value
+
+        });
+
+
+    return (
+        "https://open.neis.go.kr/hub/hisTimetable?"
+        + params.toString()
+    );
+}
+
+
+/* =====================================================
+   하루 시간표 조회
+===================================================== */
+
+async function fetchDayTimetable(
+    date,
+    dayIndex
+) {
+
+    const dateString =
+        formatDate(date);
+
+
+    const url =
+        makeTimetableUrl(
+            dateString
+        );
+
+
+    console.log(
+        `${getDayName(date)}요일 요청 날짜:`,
+        dateString
+    );
+
+
+    console.log(
+        `${getDayName(date)}요일 NEIS URL:`,
+        url.replace(
+            NEIS_KEY,
+            "***"
+        )
+    );
+
+
+    const response =
+        await fetch(url);
+
+
+    const rawText =
+        await response.text();
+
+
+    console.log(
+        `${getDayName(date)}요일 원본 응답:`,
+        rawText
+    );
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            `HTTP ${response.status}`
+        );
+    }
+
+
+    let data;
+
+    try {
+
+        data =
+            JSON.parse(rawText);
+
+    } catch (error) {
+
+        throw new Error(
+            "NEIS 응답이 JSON 형식이 아닙니다."
+        );
+    }
+
+
+    /*
+     * NEIS 오류 / 정보 메시지 처리
+     */
+
+    if (data.RESULT) {
+
+        const code =
+            data.RESULT.CODE ||
+            "";
+
+        const message =
+            data.RESULT.MESSAGE ||
+            "";
+
+        console.warn(
+            "NEIS RESULT:",
+            code,
+            message
+        );
+
+
+        if (
+            code !== "INFO-000"
+        ) {
+
+            return {
+                rows: [],
+                result: {
+                    code,
+                    message
+                }
+            };
+        }
+    }
+
+
+    let rows = [];
+
+
+    if (
+        data &&
+        data.hisTimetable &&
+        data.hisTimetable.length > 1 &&
+        data.hisTimetable[1] &&
+        data.hisTimetable[1].row
+    ) {
+
+        rows =
+            data.hisTimetable[1].row;
+
+    }
+
+
+    /*
+     * 데이터가 첫 번째 배열에 들어오는 경우도 대비
+     */
+
+    if (
+        !rows.length &&
+        data &&
+        data.hisTimetable &&
+        data.hisTimetable[0] &&
+        data.hisTimetable[0].row
+    ) {
+
+        rows =
+            data.hisTimetable[0].row;
+    }
+
+
+    return {
+        rows,
+        result: null
+    };
+}
+
+
+/* =====================================================
+   과목 처리
+===================================================== */
+
+function processSubject(
+    subject,
+    grade
+) {
+
+    if (!subject) {
+
+        return "-";
+    }
+
+
+    let result =
+        String(subject)
+            .replace(
+                /<br\s*\/?>/gi,
+                "\n"
+            );
+
+
+    /*
+     * 3학년 선택과목이 "/"로 구분되는 경우
+     */
+
+    if (
+        String(grade) === "3"
+    ) {
+
+        const parts =
+            result
+                .split("/")
+                .map(
+                    item =>
+                        item.trim()
+                )
+                .filter(Boolean);
+
+
+        if (
+            parts.length > 1
+        ) {
+
+            if (
+                selectedTrack === "문과"
+            ) {
+
+                result =
+                    parts[0];
+
+            } else {
+
+                result =
+                    parts[1];
+            }
+        }
+    }
+
+
+    return result;
+}
+
+
+/* =====================================================
+   시간표 행에서 과목 추출
+===================================================== */
+
+function getSubjectFromRow(row) {
+
+    return (
+        row.ITRT_CNTNT ||
+        row.SUBJECT ||
+        row.SUBJECT_NM ||
+        row.SBJECT_NM ||
+        "-"
+    );
+}
+
+
+/* =====================================================
+   교사 이름 추출
+===================================================== */
+
+function getTeacherFromRow(row) {
+
+    return (
+        row.TEACHER_NM ||
+        row.TEACHER ||
+        ""
+    );
+}
+
+
+/* =====================================================
+   교시 추출
+===================================================== */
+
+function getPeriodFromRow(row) {
+
+    return (
+        row.PERIO ||
+        row.PERIOD ||
+        row.PERIOD_NO ||
+        ""
+    );
+}
+
+
+/* =====================================================
+   주간 시간표
+===================================================== */
+
+async function loadWeeklyTimetable() {
+
+    const grade =
+        document.getElementById(
+            "gradeSelect"
+        ).value;
+
+
+    const classNumber =
+        document.getElementById(
+            "classSelect"
+        ).value;
+
+
+    const info =
+        document.getElementById(
+            "timetableInfo"
+        );
+
+
+    const status =
+        document.getElementById(
+            "weeklyStatus"
+        );
+
+
+    const table =
+        document.getElementById(
+            "weekTable"
+        );
+
+
+    const tbody =
+        document.getElementById(
+            "weekTableBody"
+        );
+
+
+    info.textContent =
+        `${grade}학년 ${classNumber}반 · ${
+            grade === "3"
+                ? selectedTrack
+                : ""
+        }`;
+
+
+    status.innerHTML =
+        `<div class="loading">
+            이번 주 시간표를 불러오는 중...
+        </div>`;
+
+
+    table.style.display =
+        "none";
+
+
+    tbody.innerHTML =
+        "";
+
+
+    const monday =
+        getMonday();
+
+
+    const days = [];
+
+
+    for (
+        let i = 0;
+        i < 5;
+        i++
+    ) {
+
+        const date =
+            new Date(monday);
+
+        date.setDate(
+            monday.getDate() + i
+        );
+
+        days.push(date);
+    }
+
+
+    /*
+     * 요일별 결과 저장
+     */
+
+    const weeklyData = [
+        [],
+        [],
+        [],
+        [],
+        []
+    ];
+
+
+    const statuses = [];
+
+
+    /*
+     * 월~금 각각 조회
+     */
+
+    for (
+        let i = 0;
+        i < days.length;
+        i++
+    ) {
+
+        const date =
+            days[i];
+
+
+        try {
+
+            const result =
+                await fetchDayTimetable(
+                    date,
+                    i
+                );
+
+
+            weeklyData[i] =
+                result.rows;
+
+
+            if (
+                result.rows.length
+            ) {
+
+                statuses.push(
+                    `<span class="day-status success">
+                        ${getDayName(date)}요일 ✓
+                    </span>`
+                );
+
+            } else {
+
+                const message =
+                    result.result
+                        ? result.result.message
+                        : "시간표 데이터 없음";
+
+
+                statuses.push(
+                    `<span class="day-status empty">
+                        ${getDayName(date)}요일 · ${message}
+                    </span>`
+                );
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                `${getDayName(date)}요일 시간표 오류:`,
+                error
+            );
+
+
+            weeklyData[i] =
+                [];
+
+
+            statuses.push(
+                `<span class="day-status error">
+                    ${getDayName(date)}요일 · 조회 오류
+                </span>`
+            );
+        }
+    }
+
+
+    status.innerHTML =
+        statuses.join(
+            "<br>"
+        );
+
+
+    /*
+     * 전체 데이터가 없는 경우
+     */
+
+    const hasData =
+        weeklyData.some(
+            day =>
+                day.length > 0
+        );
+
+
+    if (!hasData) {
+
+        status.innerHTML +=
+            `<div class="day-status error">
+                ⚠️ 이번 주 시간표를 찾지 못했습니다.
+                <br>
+                브라우저 개발자 도구(F12)의 Console에서
+                NEIS 원본 응답을 확인하세요.
+            </div>`;
+
+
+        return;
+    }
+
+
+    /*
+     * 최대 교시 계산
+     */
+
+    let maxPeriod = 0;
+
+
+    weeklyData.forEach(
+        dayRows => {
+
+            dayRows.forEach(
+                row => {
+
+                    const period =
+                        parseInt(
+                            getPeriodFromRow(row),
+                            10
+                        );
+
+
+                    if (
+                        !isNaN(period) &&
+                        period > maxPeriod
+                    ) {
+
+                        maxPeriod =
+                            period;
+                    }
+                }
+            );
+        }
+    );
+
+
+    /*
+     * 교시 정보가 없는 경우
+     */
+
+    if (
+        maxPeriod === 0
+    ) {
+
+        maxPeriod = 10;
+    }
+
+
+    /*
+     * 테이블 생성
+     */
+
+    for (
+        let period = 1;
+        period <= maxPeriod;
+        period++
+    ) {
+
+        const tr =
+            document.createElement(
+                "tr"
+            );
+
+
+        const periodCell =
+            document.createElement(
+                "td"
+            );
+
+
+        periodCell.className =
+            "period";
+
+
+        periodCell.textContent =
+            `${period}교시`;
+
+
+        tr.appendChild(
+            periodCell
+        );
+
+
+        /*
+         * 월~금
+         */
+
+        for (
+            let dayIndex = 0;
+            dayIndex < 5;
+            dayIndex++
+        ) {
+
+            const td =
+                document.createElement(
+                    "td"
+                );
+
+
+            const rows =
+                weeklyData[
+                    dayIndex
+                ];
+
+
+            const matchedRows =
+                rows.filter(
+                    row => {
+
+                        const p =
+                            parseInt(
+                                getPeriodFromRow(row),
+                                10
+                            );
+
+                        return (
+                            p === period
+                        );
+                    }
+                );
+
+
+            if (
+                matchedRows.length === 0
+            ) {
+
+                td.innerHTML =
+                    "-";
+
+            } else {
+
+                const html =
+                    matchedRows
+                        .map(
+                            row => {
+
+                                const subject =
+                                    processSubject(
+                                        getSubjectFromRow(row),
+                                        grade
+                                    );
+
+
+                                const teacher =
+                                    getTeacherFromRow(
+                                        row
+                                    );
+
+
+                                return `
+                                    <div class="subject">
+                                        ${escapeHtml(subject)}
+                                    </div>
+
+                                    ${
+                                        teacher
+                                            ? `
+                                                <div class="teacher">
+                                                    ${escapeHtml(teacher)}
+                                                </div>
+                                              `
+                                            : ""
+                                    }
+                                `;
+                            }
+                        )
+                        .join(
+                            "<hr>"
+                        );
+
+
+                td.innerHTML =
+                    html;
+            }
+
+
+            tr.appendChild(
+                td
+            );
+        }
+
+
+        tbody.appendChild(
+            tr
+        );
+    }
+
+
+    table.style.display =
+        "table";
+}
+
+
+/* =====================================================
+   HTML 이스케이프
+===================================================== */
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+}
+
+
+/* =====================================================
+   하단 메뉴
+===================================================== */
+
+function showSection(
+    sectionId,
+    button
+) {
+
+    const sections =
+        document.querySelectorAll(
+            ".section"
+        );
+
+
+    sections.forEach(
+        section => {
+
+            section.classList.remove(
+                "active"
+            );
+        }
+    );
+
+
+    const target =
+        document.getElementById(
+            sectionId
+        );
+
+
+    if (target) {
+
+        target.classList.add(
+            "active"
+        );
+    }
+
+
+    const buttons =
+        document.querySelectorAll(
+            ".bottom-nav button"
+        );
+
+
+    buttons.forEach(
+        btn => {
+
+            btn.classList.remove(
+                "active"
+            );
+        }
+    );
+
+
+    if (button) {
+
+        button.classList.add(
+            "active"
+        );
+    }
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* =====================================================
+   앱 시작
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        gradeChanged();
+
+        loadMeal();
+
+        /*
+         * 시간표는 자동으로 호출하지 않고
+         * 사용자가 조회 버튼을 누르게 함.
+         */
+    }
 );
 
 </script>
